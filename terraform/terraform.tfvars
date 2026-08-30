@@ -1,0 +1,1 @@
+# Valores das variáveis
