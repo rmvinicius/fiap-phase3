@@ -1,14 +1,15 @@
-# modules/network/main.tf
-# Criação da VPC principal
+# VPC
 resource "aws_vpc" "main" {
-  cidr_block = var.vpc_cidr
+  cidr_block       = var.vpc_ipv4_block
+  instance_tenancy = var.vpc_instance_tenancy
+  region = var.aws_region
 
   tags = {
-    Name = "main-vpc"
+    Name = "main"
   }
 }
 
-# Criação de múltiplas subnets dinamicamente usando for_each
+# Create multiples subnets
 resource "aws_subnet" "subnets" {
   for_each          = var.subnets
   vpc_id            = aws_vpc.main.id
