@@ -1,4 +1,13 @@
 # Start
+docker build -t terraform-local:1.0 .
+
+export AWS_ACCESS_KEY_ID="teste"
+export AWS_SECRET_ACCESS_KEY="teste"
+export AWS_SESSION_TOKEN="teste"
+
+docker run -it -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" -e AWS_SESSION_TOKEN="$AWS_SESSION_TOKEN" -v ./:/workspace terraform-local:1.0 /bin/bash
+
+# terraform commands
 terraform init -backend-config=bootstrap/remote/backend-hmg.tfvars --reconfigure ### Usar somente para alterar ambientes
 terraform plan -var-file="environment\hmg.tfvars"
 terraform apply -var-file="environment\hmg.tfvars"
@@ -19,14 +28,3 @@ aws dynamodb create-table \
   --key-schema AttributeName=LockID,KeyType=HASH \
   --billing-mode PAY_PER_REQUEST \
   --region us-east-1
-
-  
-# Review
-
-main.tf
-provider.tf = OK
-variables.tf = OK
-outputs.tf
-backend.tf
-modules/network
-dev.tfvars
