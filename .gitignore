@@ -1,0 +1,6 @@
+# Terraform
+#############
+
+# .terraform directory - stores downloaded providers and modules
+.terraform/
+.terraform*

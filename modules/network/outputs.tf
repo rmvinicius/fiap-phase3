@@ -34,9 +34,9 @@ output "private_subnet_ids" {
 }
 
 output "sg_private_id" {
-  value = aws_security_group.sg_priv_dev_01.id
+  value = aws_security_group.sg_private.id
 }
 
 output "sg_public_id" {
-  value = aws_security_group.sg_pub_dev_01.id
+  value = aws_security_group.sg_public.id
 }
