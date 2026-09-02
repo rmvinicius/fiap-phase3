@@ -1,22 +1,29 @@
+# Tags
+environment = "Desenvolvimento"
+vpc_name = "vpc-dev"
+igw_name = "igw-dev"
+eip_name = "eip-nat-dev"
+nat_gateway_name = "nat-gw-dev"
+route_table_public_name = "rt-public-dev"
+route_table_private_name = "rt-private-dev"
+
 # Region
 aws_region    = "us-east-1"
-
-# AWS Credentials
-access_key    = "valor" 
-secret_key    = "valor" 
-token         = "valor" 
-
-# Backend tfstate
-bucket_name     = "tech-challenge"
-bucket_key      = "terraform/dev/tech-challenge-3.tfstate"
-dynamodb_lock   = "terraform-dev-locks"
-encrypt         = true
 
 # Network
 vpc_ipv4_block = "10.0.0.0/16"
 vpc_instance_tenancy = "default"
+enable_nat_gateway   = true
 subnets = {
-    "snet-dev-aks-01" = "10.0.0.0/24"
-    "snet-dev-aks-01" = "10.0.0.0/24"
-    "snet-dev-aks-01" = "10.0.0.0/24"
+    "snet-dev-aks-1a" = { cidr = "10.0.0.0/23", az = "us-east-1a" }
+    "snet-dev-aks-1b" = { cidr = "10.0.2.0/23", az = "us-east-1b" }
+    "snet-dev-rds-1a" = { cidr = "10.0.4.0/24", az = "us-east-1a" }
+    "snet-dev-rds-1b" = { cidr = "10.0.5.0/24", az = "us-east-1b" }
+    "snet-dev-pve-1a" = { cidr = "10.0.6.0/24", az = "us-east-1a" }
+    "snet-dev-pve-1b" = { cidr = "10.0.7.0/24", az = "us-east-1b" }
+    "snet-dev-pub-1a" = { cidr = "10.0.200.0/24", az = "us-east-1a" }
 }
+security_group_priv_name = "nsg-dev-priv-01"
+security_group_priv_description = "Security group for private network"
+security_group_pub_name = "nsg-dev-pub-01"
+security_group_pub_description = "Security group for public network"

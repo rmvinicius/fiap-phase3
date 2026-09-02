@@ -7,33 +7,34 @@ output "subnet_ids" {
   value = module.network.subnet_ids
 }
 
+output "igw_id" {
+  value = module.network.igw_id
+}
 
+output "nat_gateway_id" {
+  value = module.network.nat_gateway_id
+}
 
+output "public_route_table_id" {
+  value = module.network.public_route_table_id
+}
 
+output "private_route_table_id" {
+  value = module.network.private_route_table_id
+}
 
+output "public_subnet_ids" {
+  value = module.network.public_subnet_ids
+}
 
+output "private_subnet_ids" {
+  value = module.network.private_subnet_ids
+}
 
+output "sg_private_id" {
+  value = module.network.sg_private_id
+}
 
-
-
-
-#
-## Retorna IDs das instâncias web criadas com count
-#output "web_instances" {
-#  value = aws_instance.web[*].id
-#}
-#
-## Retorna IDs das instâncias criadas com for_each
-#output "apps_instances" {
-#  value = { for k, inst in aws_instance.apps : k => inst.id }
-#}
-#
-## Retorna o ID do Security Group criado com dynamic block
-#output "security_group_id" {
-#  value = aws_security_group.web_sg.id
-#}
-#
-## Retorna o ID da VPC pública criada via módulo do Registry
-#output "public_vpc_id" {
-#  value = module.public_vpc.vpc_id
-#}
+output "sg_public_id" {
+  value = module.network.sg_public_id
+}
