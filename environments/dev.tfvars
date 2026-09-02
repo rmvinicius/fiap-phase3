@@ -1,4 +1,4 @@
-# Tags
+# TAGS
 environment = "Desenvolvimento"
 vpc_name = "vpc-dev"
 igw_name = "igw-dev"
@@ -7,10 +7,10 @@ nat_gateway_name = "nat-gw-dev"
 route_table_public_name = "rt-public-dev"
 route_table_private_name = "rt-private-dev"
 
-# Region
+### REGION
 aws_region    = "us-east-1"
 
-# Network
+### NETWORK
 vpc_ipv4_block = "10.0.0.0/16"
 vpc_instance_tenancy = "default"
 enable_nat_gateway   = true
@@ -27,3 +27,6 @@ security_group_priv_name = "nsg-dev-priv-01"
 security_group_priv_description = "Security group for private network"
 security_group_pub_name = "nsg-dev-pub-01"
 security_group_pub_description = "Security group for public network"
+
+### SQS
+sqs_name = "queue-toggle-master"

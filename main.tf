@@ -18,3 +18,10 @@ module "network" {
   security_group_pub_name = var.security_group_pub_name
   security_group_pub_description = var.security_group_pub_description
 }
+
+module "sqs" {
+  source = "./modules/sqs"
+  environment = var.environment
+  sqs_name = var.sqs_name
+  aws_region = var.aws_region
+}

@@ -70,3 +70,8 @@ variable "security_group_pub_description" {
   type        = string
   description = "Name of the public security group"
 }
+
+# SQS
+variable "sqs_name" {
+    type = string
+}

@@ -38,3 +38,8 @@ output "sg_private_id" {
 output "sg_public_id" {
   value = module.network.sg_public_id
 }
+
+# SQS Output
+output "sqs_id" {
+    value = module.sqs.sqs_id
+}
