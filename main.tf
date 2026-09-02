@@ -25,3 +25,15 @@ module "sqs" {
   sqs_name = var.sqs_name
   aws_region = var.aws_region
 }
+
+module "rds" {
+  source = "./modules/rds"
+  environment = var.environment
+  rds_database_instances = var.rds_database_instances
+  rds_allocated_storage = var.rds_allocated_storage
+  rds_instance_class = var.rds_instance_class
+  rds_engine = var.rds_engine
+  rds_engine_version = var.rds_engine_version
+  rds_parameter_group_name = var.rds_parameter_group_name
+  rds_skip_final_snapshot = var.rds_skip_final_snapshot
+}

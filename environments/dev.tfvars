@@ -30,3 +30,12 @@ security_group_pub_description = "Security group for public network"
 
 ### SQS
 sqs_name = "queue-toggle-master"
+
+### RDS POSTGRES
+rds_database_instances = 
+rds_allocated_storage = 20
+rds_instance_class = "db.t3.micro"
+rds_engine = "postgres"
+rds_engine_version = "15"
+rds_parameter_group_name = "definir" 
+rds_skip_final_snapshot = "true"
