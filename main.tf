@@ -42,3 +42,22 @@ module "rds" {
   rds_parameter_group_name = var.rds_parameter_group_name
   rds_skip_final_snapshot = var.rds_skip_final_snapshot
 }
+
+module "eks" {
+  source = "./modules/eks"
+  environment = var.environment
+  eks_cluster_name = var.eks_cluster_name
+  eks_cluster_version = var.eks_cluster_version
+  eks_subnet_ids = var.eks_subnet_ids
+  eks_node_groups = var.eks_node_groups
+}
+
+module "dynamodb" {
+  source = "./modules/dynamodb"
+  environment = var.environment
+  dynamodb_table_name = var.dynamodb_table_name
+  dynamodb_hash_key = var.dynamodb_hash_key
+  dynamodb_range_key = var.dynamodb_range_key
+  dynamodb_attributes = var.dynamodb_attributes
+  dynamodb_billing_mode = var.dynamodb_billing_mode
+}

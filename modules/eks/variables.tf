@@ -2,25 +2,19 @@ variable "environment" {
   type = string
 }
 
-variable "cluster_name" {
+variable "eks_cluster_name" {
   type    = string
-  default = "eks-dev-01"
 }
 
-variable "cluster_version" {
-  type    = string
-  default = "1.35"
+variable "eks_cluster_version" {
+  type    = string 
 }
 
-variable "subnet_ids" {
+variable "eks_subnet_ids" {
   type = list(string)
 }
 
-variable "vpc_id" {
-  type = string
-}
-
-variable "node_groups" {
+variable "eks_node_groups" {
   type = list(object({
     name         = string
     instance_type = string

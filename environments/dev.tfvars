@@ -45,3 +45,27 @@ rds_engine = "postgres"
 rds_engine_version = "15"
 rds_parameter_group_name = "definir" 
 rds_skip_final_snapshot = "true"
+
+### EKS
+
+eks_cluster_name = "eks-dev-01"
+eks_cluster_version = "1.35"
+eks_subnet_ids = 
+eks_node_groups = 
+
+### DYNAMODB
+
+dynamodb_table_name = "ToggleMasterAnalytics"
+dynamodb_hash_key = "id"
+dynamodb_range_key = "timestamp"
+dynamodb_attributes = [
+    {
+      name = "id"
+      type = "S"
+    },
+    {
+      name = "timestamp"
+      type = "S"
+    }
+  ]
+dynamodb_billing_mode = "PAY_PER_REQUEST"

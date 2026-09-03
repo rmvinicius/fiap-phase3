@@ -2,22 +2,22 @@ variable "environment" {
   type = string
 }
 
-variable "table_name" {
+variable "dynamodb_table_name" {
   type    = string
   default = "ToggleMasterAnalytics"
 }
 
-variable "hash_key" {
+variable "dynamodb_hash_key" {
   type    = string
   default = "id"
 }
 
-variable "range_key" {
+variable "dynamodb_range_key" {
   type    = string
   default = "timestamp"
 }
 
-variable "attributes" {
+variable "dynamodb_attributes" {
   type = list(object({
     name = string
     type = string
@@ -34,12 +34,7 @@ variable "attributes" {
   ]
 }
 
-variable "billing_mode" {
+variable "dynamodb_billing_mode" {
   type    = string
   default = "PAY_PER_REQUEST"
-}
-
-variable "tags" {
-  type    = map(string)
-  default = {}
 }

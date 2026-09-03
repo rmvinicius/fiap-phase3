@@ -1,14 +1,14 @@
 resource "aws_eks_cluster" "main" {
-  name     = var.cluster_name
+  name     = var.eks_cluster_name
   role_arn = aws_iam_role.cluster.arn
-  version  = var.cluster_version
+  version  = var.eks_cluster_version
 
   access_config {
     authentication_mode = "API"
   }
 
   vpc_config {
-    subnet_ids = var.subnet_ids
+    subnet_ids = var.eks_subnet_ids
   }
 
   depends_on = [
@@ -16,13 +16,13 @@ resource "aws_eks_cluster" "main" {
   ]
 
   tags = {
-    Name        = var.cluster_name
+    Name        = var.eks_cluster_name
     Environment = var.environment
   }
 }
 
 resource "aws_iam_role" "cluster" {
-  name = "${var.cluster_name}-role"
+  name = "${var.eks_cluster_name}-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -47,12 +47,12 @@ resource "aws_iam_role_policy_attachment" "cluster_AmazonEKSClusterPolicy" {
 
 # Node groups
 resource "aws_eks_node_group" "nodes" {
-  for_each = { for ng in var.node_groups : ng.name => ng }
+  for_each = { for ng in var.eks_node_groups : ng.name => ng }
 
   cluster_name    = aws_eks_cluster.main.name
   node_group_name = each.value.name
-  node_role       = aws_iam_role.node.arn
-  subnet_ids      = var.subnet_ids
+  node_role_arn   = aws_iam_role.node.arn
+  subnet_ids      = var.eks_subnet_ids
 
   scaling_config {
     desired_size = each.value.desired_size
@@ -73,7 +73,7 @@ resource "aws_eks_node_group" "nodes" {
 }
 
 resource "aws_iam_role" "node" {
-  name = "${var.cluster_name}-node-role"
+  name = "${var.eks_cluster_name}-node-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

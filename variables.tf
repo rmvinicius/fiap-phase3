@@ -135,3 +135,50 @@ variable "rds_skip_final_snapshot" {
   type    = bool
   default = true
 }
+
+# EKS
+variable "eks_cluster_name" {
+  type    = string
+}
+
+variable "eks_cluster_version" {
+  type    = string 
+}
+
+variable "eks_subnet_ids" {
+  type = list(string)
+}
+
+variable "eks_node_groups" {
+  type = list(object({
+    name         = string
+    instance_type = string
+    desired_size  = number
+    min_size      = number
+    max_size      = number
+  }))
+}
+
+# DYNAMODB
+variable "dynamodb_table_name" {
+  type    = string
+}
+
+variable "dynamodb_hash_key" {
+  type    = string
+}
+
+variable "dynamodb_range_key" {
+  type    = string
+}
+
+variable "dynamodb_attributes" {
+  type = list(object({
+    name = string
+    type = string
+  }))
+}
+
+variable "dynamodb_billing_mode" {
+  type    = string
+}
