@@ -2,6 +2,10 @@ variable "environment" {
   type = string
 }
 
+variable "aws_region" {
+  type = string
+}
+
 variable "rds_database_instances" {
   type = list(object({
     name     = string
@@ -13,7 +17,6 @@ variable "rds_database_instances" {
 
 variable "rds_allocated_storage" {
   type    = number
-  default = 20
 }
 
 variable "rds_instance_class" {
@@ -34,5 +37,4 @@ variable "rds_parameter_group_name" {
 
 variable "rds_skip_final_snapshot" {
   type    = bool
-  default = true
 }

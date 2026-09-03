@@ -49,7 +49,9 @@ sqs_visibility_timeout_seconds = 30
 sqs_max_receive_count = 4
 ###############
 
+###############
 ### RDS POSTGRES
+###############
 rds_database_instances = 
 rds_allocated_storage = 20
 rds_instance_class = "db.t3.micro"
@@ -57,13 +59,16 @@ rds_engine = "postgres"
 rds_engine_version = "15"
 rds_parameter_group_name = "definir" 
 rds_skip_final_snapshot = "true"
+###############
 
+###############
 ### EKS
-
+###############
 eks_cluster_name = "eks-dev-01"
 eks_cluster_version = "1.35"
 eks_subnet_ids = 
 eks_node_groups = 
+###############
 
 ###############
 ### DYNAMODB
@@ -85,4 +90,21 @@ dynamodb_attributes = [
     }
   ]
 
+###############
+
+###############
+### REDIS
+###############
+redis_cache_name = "redis-dev-01"
+redis_description = "Redis development cache"
+redis_security_group_ids =
+redis_subnet_ids =
+redis_node_type = "cache.t3.micro"
+redis_num_cache_nodes = 1
+redis_parameter_group_name = "default.redis6.x"
+redis_engine =
+redis_version =
+redis_retention_limit =
+redis_snapshot_window =
+redis_maintenance_window =
 ###############

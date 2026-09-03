@@ -2,6 +2,10 @@ variable "environment" {
   type = string
 }
 
+variable "aws_region" {
+  type = string
+}
+
 variable "dynamodb_table_name" {
   type    = string
   default = "ToggleMasterAnalytics"

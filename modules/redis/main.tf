@@ -1,5 +1,6 @@
 resource "aws_elasticache_replication_group" "redis" {
-  replication_group_description = var.redis_description
+  region                        = var.aws_region
+  description                   = var.redis_description
   replication_group_id          = var.redis_cache_name
   node_type                     = var.redis_node_type
   num_cache_clusters            = var.redis_num_cache_nodes
@@ -19,11 +20,11 @@ resource "aws_elasticache_replication_group" "redis" {
 }
 
 resource "aws_elasticache_subnet_group" "redis_subnet_group" {
-  name       = "${var.cache_name}-subnet-group"
-  subnet_ids = var.subnet_ids
+  name       = "${var.redis_cache_name}-subnet-group"
+  subnet_ids = var.redis_subnet_ids
 
   tags = {
-    Name        = "${var.cache_name}-subnet-group"
+    Name        = "${var.redis_cache_name}-subnet-group"
     Environment = var.environment
   }
 }

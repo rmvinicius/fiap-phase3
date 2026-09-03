@@ -1,6 +1,7 @@
 resource "aws_db_instance" "rds" {
   for_each = { for db in var.rds_database_instances : db.name => db }
 
+  region               = var.aws_region
   allocated_storage    = var.rds_allocated_storage
   db_name              = each.value.rds_db_name
   engine               = var.rds_engine

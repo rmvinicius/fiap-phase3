@@ -65,3 +65,33 @@ output "table_id" {
     value = module.dynamodb.table_id
 }
 ###############
+
+###############
+### EKS Output
+###############
+output "cluster_endpoint" {
+  value = module.eks.cluster_endpoint
+}
+
+output "cluster_certificate_authority" {
+  value = module.eks.cluster_certificate_authority
+}
+
+output "cluster_name" {
+  value = module.eks.cluster_name
+}
+
+output "cluster_arn" {
+  value = module.eks.cluster_arn
+}
+
+###############
+### RDS Output
+###############
+output "database_endpoints" {
+  value = module.rds.database_endpoints
+}
+
+output "database_arns" {
+  value = module.rds.database_arns
+}

@@ -39,9 +39,13 @@ module "sqs" {
 }
 ###############
 
+###############
+### MODULE RDS
+###############
 module "rds" {
   source = "./modules/rds"
   environment = var.environment
+  aws_region                      = var.aws_region
   rds_database_instances = var.rds_database_instances
   rds_allocated_storage = var.rds_allocated_storage
   rds_instance_class = var.rds_instance_class
@@ -50,15 +54,21 @@ module "rds" {
   rds_parameter_group_name = var.rds_parameter_group_name
   rds_skip_final_snapshot = var.rds_skip_final_snapshot
 }
+###############
 
+###############
+### MODULE EKS
+###############
 module "eks" {
   source = "./modules/eks"
   environment = var.environment
+  aws_region                      = var.aws_region
   eks_cluster_name = var.eks_cluster_name
   eks_cluster_version = var.eks_cluster_version
   eks_subnet_ids = var.eks_subnet_ids
   eks_node_groups = var.eks_node_groups
 }
+###############
 
 ###############
 ### MODULE DYNAMODB
@@ -66,6 +76,7 @@ module "eks" {
 module "dynamodb" {
   source = "./modules/dynamodb"
   environment = var.environment
+  aws_region                      = var.aws_region
   dynamodb_table_name = var.dynamodb_table_name
   dynamodb_billing_mode = var.dynamodb_billing_mode
   dynamodb_read_capacity = var.dynamodb_read_capacity
@@ -73,5 +84,27 @@ module "dynamodb" {
   dynamodb_hash_key = var.dynamodb_hash_key
   dynamodb_range_key = var.dynamodb_range_key
   dynamodb_attributes = var.dynamodb_attributes
+}
+###############
+
+###############
+### MODULE REDIS
+###############
+module "dynamodb" {
+  source = "./modules/redis"
+  environment = var.environment
+  aws_region                      = var.aws_region
+  redis_cache_name = var.redis_cache_name
+  redis_description = var.redis_description
+  redis_security_group_ids = var.redis_security_group_ids
+  redis_subnet_ids = var.redis_subnet_ids
+  redis_node_type = var.redis_node_type
+  redis_num_cache_nodes = var.redis_num_cache_nodes
+  redis_parameter_group_name = var.redis_parameter_group_name
+  redis_engine = var.redis_engine
+  redis_version = var.redis_version
+  redis_retention_limit = var.redis_retention_limit
+  redis_snapshot_window = var.redis_snapshot_window
+  redis_maintenance_window = var.redis_maintenance_window
 }
 ###############

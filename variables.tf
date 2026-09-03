@@ -1,25 +1,10 @@
-# TAGS
+###############
+### TAGS
+###############
 variable "environment" {
     type = string
 }
-variable "vpc_name" {
-    type = string
-}
-variable "igw_name" {
-    type = string
-}
-variable "eip_name" {
-    type = string
-}
-variable "nat_gateway_name" {
-    type = string
-}
-variable "route_table_public_name" {
-    type = string
-}
-variable "route_table_private_name" {
-    type = string
-}
+
 
 # Região AWS
 variable "aws_region" {
@@ -29,6 +14,10 @@ variable "aws_region" {
 ###############
 ### NETWORK
 ###############
+variable "vpc_name" {
+    type = string
+}
+
 variable "vpc_ipv4_block" {
   type = string
 }
@@ -45,6 +34,22 @@ variable "subnets" {
   description = "Map with name, CIDR and AZ for each subnet"
 }
 
+variable "igw_name" {
+    type = string
+}
+variable "eip_name" {
+    type = string
+}
+variable "nat_gateway_name" {
+    type = string
+}
+variable "route_table_public_name" {
+    type = string
+}
+variable "route_table_private_name" {
+    type = string
+}
+
 variable "eip_enable_nat_gateway" {
   type        = bool
   default     = true
@@ -52,7 +57,6 @@ variable "eip_enable_nat_gateway" {
 }
 
 # SECURITY GROUP
-
 variable "security_group_priv_name" {
   type        = string
   description = "Name of the private security group"
@@ -106,7 +110,9 @@ variable "sqs_max_receive_count" {
 }
 ###############
 
-# RDS Postgres
+###############
+### RDS Postgres
+###############
 variable "rds_database_instances" {
   type = list(object({
     name     = string
@@ -118,7 +124,6 @@ variable "rds_database_instances" {
 
 variable "rds_allocated_storage" {
   type    = number
-  default = 20
 }
 
 variable "rds_instance_class" {
@@ -139,10 +144,12 @@ variable "rds_parameter_group_name" {
 
 variable "rds_skip_final_snapshot" {
   type    = bool
-  default = true
 }
+###############
 
-# EKS
+###############
+### EKS
+###############
 variable "eks_cluster_name" {
   type    = string
 }
@@ -164,6 +171,7 @@ variable "eks_node_groups" {
     max_size      = number
   }))
 }
+###############
 
 ###############
 ### DYNAMODB
@@ -198,5 +206,57 @@ variable "dynamodb_attributes" {
     name = string
     type = string
   }))
+}
+###############
+
+###############
+### REDIS
+###############
+variable "redis_cache_name" {
+  type    = string
+}
+
+variable "redis_description" {
+  type    = string
+}
+
+variable "redis_security_group_ids" {
+  type = list(string)
+}
+
+variable "redis_subnet_ids" {
+  type = list(string)
+}
+
+variable "redis_node_type" {
+  type    = string
+}
+
+variable "redis_num_cache_nodes" {
+  type    = number
+}
+
+variable "redis_parameter_group_name" {
+  type    = string
+}
+
+variable "redis_engine" {
+  type    = string
+}
+
+variable "redis_version" {
+  type    = string
+}
+
+variable "redis_retention_limit" {
+  type    = string
+}
+
+variable "redis_snapshot_window" {
+  type    = string
+}
+
+variable "redis_maintenance_window" {
+  type    = string
 }
 ###############
