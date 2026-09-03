@@ -1,4 +1,6 @@
-# Consome módulo local de rede
+###############
+### MODULE NETWORK
+###############
 module "network" {
   source   = "./modules/network"
   vpc_ipv4_block = var.vpc_ipv4_block
@@ -18,10 +20,15 @@ module "network" {
   security_group_pub_name = var.security_group_pub_name
   security_group_pub_description = var.security_group_pub_description
 }
+###############
 
+###############
+### MODULE SQS
+###############
 module "sqs" {
   source                          = "./modules/sqs"
   environment                     = var.environment
+  aws_region                      = var.aws_region
   sqs_name                        = var.sqs_name
   sqs_delay_seconds               = var.sqs_delay_seconds
   sqs_max_message_size            = var.sqs_max_message_size
@@ -30,6 +37,7 @@ module "sqs" {
   sqs_visibility_timeout_seconds  = var.sqs_visibility_timeout_seconds
   sqs_max_receive_count           = var.sqs_max_receive_count
 }
+###############
 
 module "rds" {
   source = "./modules/rds"
@@ -52,12 +60,18 @@ module "eks" {
   eks_node_groups = var.eks_node_groups
 }
 
+###############
+### MODULE DYNAMODB
+###############
 module "dynamodb" {
   source = "./modules/dynamodb"
   environment = var.environment
   dynamodb_table_name = var.dynamodb_table_name
+  dynamodb_billing_mode = var.dynamodb_billing_mode
+  dynamodb_read_capacity = var.dynamodb_read_capacity
+  dynamodb_write_capacity = var.dynamodb_write_capacity
   dynamodb_hash_key = var.dynamodb_hash_key
   dynamodb_range_key = var.dynamodb_range_key
   dynamodb_attributes = var.dynamodb_attributes
-  dynamodb_billing_mode = var.dynamodb_billing_mode
 }
+###############

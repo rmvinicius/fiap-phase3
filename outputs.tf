@@ -1,4 +1,6 @@
-# Network output
+###############
+### NETWORK Output
+###############
 output "vpc_id" {
   value = module.network.vpc_id
 }
@@ -38,8 +40,28 @@ output "sg_private_id" {
 output "sg_public_id" {
   value = module.network.sg_public_id
 }
+###############
 
-# SQS Output
+###############
+### SQS Output
+###############
 output "sqs_id" {
     value = module.sqs.sqs_id
 }
+###############
+
+###############
+### DYNAMODB Output
+###############
+output "table_name" {
+    value = module.dynamodb.table_name
+}
+
+output "table_arn" {
+    value = module.dynamodb.table_arn
+}
+
+output "table_id" {
+    value = module.dynamodb.table_id
+}
+###############

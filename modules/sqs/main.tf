@@ -1,5 +1,6 @@
 resource "aws_sqs_queue" "queue" {
   name                        = var.sqs_name
+  region                      = var.aws_region
   delay_seconds               = var.sqs_delay_seconds
   max_message_size            = var.sqs_max_message_size
   message_retention_seconds   = var.sqs_message_retention_seconds
@@ -12,6 +13,7 @@ resource "aws_sqs_queue" "queue" {
   })
 
   tags = {
+    Name                      = var.sqs_name
     Environment               = var.environment
   }
 }
@@ -23,6 +25,7 @@ resource "aws_sqs_queue" "terraform_queue_deadletter" {
   visibility_timeout_seconds  = var.sqs_visibility_timeout_seconds
 
   tags = {
+    Name                      = "${var.sqs_name}-deadletter"
     Environment               = var.environment
   }
 }

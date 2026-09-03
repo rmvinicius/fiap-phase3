@@ -26,7 +26,9 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
-# NETWORK
+###############
+### NETWORK
+###############
 variable "vpc_ipv4_block" {
   type = string
 }
@@ -70,8 +72,11 @@ variable "security_group_pub_description" {
   type        = string
   description = "Name of the public security group"
 }
+###############
 
-# SQS
+###############
+### SQS
+###############
 variable "sqs_name" {
   type = string
 }
@@ -99,6 +104,7 @@ variable "sqs_visibility_timeout_seconds" {
 variable "sqs_max_receive_count" {
   type    = number
 }
+###############
 
 # RDS Postgres
 variable "rds_database_instances" {
@@ -159,10 +165,25 @@ variable "eks_node_groups" {
   }))
 }
 
-# DYNAMODB
+###############
+### DYNAMODB
+###############
 variable "dynamodb_table_name" {
   type    = string
 }
+
+variable "dynamodb_billing_mode" {
+  type    = string
+}
+
+variable "dynamodb_read_capacity" {
+  type    = number
+}
+
+variable "dynamodb_write_capacity" {
+  type    = number
+}
+
 
 variable "dynamodb_hash_key" {
   type    = string
@@ -178,7 +199,4 @@ variable "dynamodb_attributes" {
     type = string
   }))
 }
-
-variable "dynamodb_billing_mode" {
-  type    = string
-}
+###############

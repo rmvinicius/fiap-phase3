@@ -7,6 +7,19 @@ variable "dynamodb_table_name" {
   default = "ToggleMasterAnalytics"
 }
 
+variable "dynamodb_billing_mode" {
+  type    = string
+}
+
+variable "dynamodb_read_capacity" {
+  type    = number
+}
+
+variable "dynamodb_write_capacity" {
+  type    = number
+}
+
+
 variable "dynamodb_hash_key" {
   type    = string
   default = "id"
@@ -34,7 +47,3 @@ variable "dynamodb_attributes" {
   ]
 }
 
-variable "dynamodb_billing_mode" {
-  type    = string
-  default = "PAY_PER_REQUEST"
-}
