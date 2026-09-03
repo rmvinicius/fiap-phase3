@@ -2,7 +2,6 @@
 resource "aws_vpc" "vpc" {
   cidr_block       = var.vpc_ipv4_block
   instance_tenancy = var.vpc_instance_tenancy
-  region = var.aws_region
 
   tags = {
     Name = var.vpc_name

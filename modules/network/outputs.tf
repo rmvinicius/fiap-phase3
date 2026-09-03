@@ -40,3 +40,24 @@ output "sg_private_id" {
 output "sg_public_id" {
   value = aws_security_group.sg_public.id
 }
+
+output "eks_subnet_ids" {
+  value = [
+    aws_subnet.subnets["snet-dev-aks-1a"].id,
+    aws_subnet.subnets["snet-dev-aks-1b"].id,
+  ]
+}
+
+output "rds_subnet_ids" {
+  value = [
+    aws_subnet.subnets["snet-dev-rds-1a"].id,
+    aws_subnet.subnets["snet-dev-rds-1b"].id,
+  ]
+}
+
+output "redis_subnet_ids" {
+  value = [
+    aws_subnet.subnets["snet-dev-pve-1a"].id,
+    aws_subnet.subnets["snet-dev-pve-1b"].id,
+  ]
+}

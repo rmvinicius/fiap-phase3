@@ -1,6 +1,5 @@
 resource "aws_eks_cluster" "main" {
   name     = var.eks_cluster_name
-  region                      = var.aws_region
   role_arn = aws_iam_role.cluster.arn
   version  = var.eks_cluster_version
 
@@ -71,6 +70,12 @@ resource "aws_eks_node_group" "nodes" {
     Name        = each.value.name
     Environment = var.environment
   }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.node_AmazonEKSWorkerNodePolicy,
+    aws_iam_role_policy_attachment.node_AmazonEC2ContainerRegistryReadOnly,
+    aws_iam_role_policy_attachment.node_AmazonEKS_CNI_Policy,
+  ]
 }
 
 resource "aws_iam_role" "node" {

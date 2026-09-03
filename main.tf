@@ -5,7 +5,6 @@ module "network" {
   source   = "./modules/network"
   vpc_ipv4_block = var.vpc_ipv4_block
   vpc_instance_tenancy = var.vpc_instance_tenancy
-  aws_region = var.aws_region
   subnets  = var.subnets
   eip_enable_nat_gateway   = var.eip_enable_nat_gateway
   vpc_name = var.vpc_name
@@ -28,7 +27,6 @@ module "network" {
 module "sqs" {
   source                          = "./modules/sqs"
   environment                     = var.environment
-  aws_region                      = var.aws_region
   sqs_name                        = var.sqs_name
   sqs_delay_seconds               = var.sqs_delay_seconds
   sqs_max_message_size            = var.sqs_max_message_size
@@ -43,16 +41,17 @@ module "sqs" {
 ### MODULE RDS
 ###############
 module "rds" {
-  source = "./modules/rds"
-  environment = var.environment
-  aws_region                      = var.aws_region
-  rds_database_instances = var.rds_database_instances
-  rds_allocated_storage = var.rds_allocated_storage
-  rds_instance_class = var.rds_instance_class
-  rds_engine = var.rds_engine
-  rds_engine_version = var.rds_engine_version
-  rds_parameter_group_name = var.rds_parameter_group_name
-  rds_skip_final_snapshot = var.rds_skip_final_snapshot
+  source                    = "./modules/rds"
+  environment               = var.environment
+  rds_database_instances    = var.rds_database_instances
+  rds_allocated_storage     = var.rds_allocated_storage
+  rds_instance_class        = var.rds_instance_class
+  rds_engine                = var.rds_engine
+  rds_engine_version        = var.rds_engine_version
+  rds_parameter_group_name  = var.rds_parameter_group_name
+  rds_skip_final_snapshot   = var.rds_skip_final_snapshot
+  rds_subnet_name           = var.rds_subnet_name
+  rds_subnet_ids            = module.network.rds_subnet_ids
 }
 ###############
 
@@ -60,13 +59,12 @@ module "rds" {
 ### MODULE EKS
 ###############
 module "eks" {
-  source = "./modules/eks"
-  environment = var.environment
-  aws_region                      = var.aws_region
-  eks_cluster_name = var.eks_cluster_name
+  source              = "./modules/eks"
+  environment         = var.environment
+  eks_cluster_name    = var.eks_cluster_name
   eks_cluster_version = var.eks_cluster_version
-  eks_subnet_ids = var.eks_subnet_ids
-  eks_node_groups = var.eks_node_groups
+  eks_subnet_ids      = module.network.eks_subnet_ids
+  eks_node_groups     = var.eks_node_groups
 }
 ###############
 
@@ -76,7 +74,6 @@ module "eks" {
 module "dynamodb" {
   source = "./modules/dynamodb"
   environment = var.environment
-  aws_region                      = var.aws_region
   dynamodb_table_name = var.dynamodb_table_name
   dynamodb_billing_mode = var.dynamodb_billing_mode
   dynamodb_read_capacity = var.dynamodb_read_capacity
@@ -90,21 +87,14 @@ module "dynamodb" {
 ###############
 ### MODULE REDIS
 ###############
-module "dynamodb" {
-  source = "./modules/redis"
-  environment = var.environment
-  aws_region                      = var.aws_region
-  redis_cache_name = var.redis_cache_name
-  redis_description = var.redis_description
-  redis_security_group_ids = var.redis_security_group_ids
-  redis_subnet_ids = var.redis_subnet_ids
-  redis_node_type = var.redis_node_type
-  redis_num_cache_nodes = var.redis_num_cache_nodes
-  redis_parameter_group_name = var.redis_parameter_group_name
-  redis_engine = var.redis_engine
-  redis_version = var.redis_version
-  redis_retention_limit = var.redis_retention_limit
-  redis_snapshot_window = var.redis_snapshot_window
-  redis_maintenance_window = var.redis_maintenance_window
+module "redis" {
+  source                       = "./modules/redis"
+  environment                  = var.environment
+  redis_cache_name             = var.redis_cache_name
+  redis_description            = var.redis_description
+  redis_security_group_ids     = [module.network.sg_private_id]
+  redis_subnet_ids             = module.network.redis_subnet_ids
+  redis_engine                 = var.redis_engine
+  redis_version                = var.redis_version
 }
 ###############

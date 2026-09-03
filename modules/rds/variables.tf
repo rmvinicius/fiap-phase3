@@ -2,10 +2,6 @@ variable "environment" {
   type = string
 }
 
-variable "aws_region" {
-  type = string
-}
-
 variable "rds_database_instances" {
   type = list(object({
     name     = string
@@ -37,4 +33,12 @@ variable "rds_parameter_group_name" {
 
 variable "rds_skip_final_snapshot" {
   type    = bool
+}
+
+variable "rds_subnet_name" {
+  type    = string
+}
+
+variable "rds_subnet_ids" {
+  type = list(string)
 }

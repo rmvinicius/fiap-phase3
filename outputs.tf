@@ -84,6 +84,7 @@ output "cluster_name" {
 output "cluster_arn" {
   value = module.eks.cluster_arn
 }
+###############
 
 ###############
 ### RDS Output
@@ -95,3 +96,15 @@ output "database_endpoints" {
 output "database_arns" {
   value = module.rds.database_arns
 }
+
+###############
+### RDS Output
+###############
+output "redis_endpoint" {
+  value = module.redis.redis_endpoint
+}
+
+output "redis_port" {
+  value = module.redis.redis_port
+}
+###############

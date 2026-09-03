@@ -20,10 +20,6 @@ variable "route_table_private_name" {
     type = string
 }
 
-variable "aws_region" {
-    type = string
-}
-
 variable "vpc_ipv4_block" {
     type = string
 }

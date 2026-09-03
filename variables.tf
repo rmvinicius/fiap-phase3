@@ -5,10 +5,11 @@ variable "environment" {
     type = string
 }
 
-
-# Região AWS
+###############
+### REGION
+###############
 variable "aws_region" {
-  default = "us-east-1"
+    type = string
 }
 
 ###############
@@ -145,6 +146,11 @@ variable "rds_parameter_group_name" {
 variable "rds_skip_final_snapshot" {
   type    = bool
 }
+
+variable "rds_subnet_name" {
+  type    = string
+}
+
 ###############
 
 ###############
@@ -156,10 +162,6 @@ variable "eks_cluster_name" {
 
 variable "eks_cluster_version" {
   type    = string 
-}
-
-variable "eks_subnet_ids" {
-  type = list(string)
 }
 
 variable "eks_node_groups" {
@@ -220,43 +222,11 @@ variable "redis_description" {
   type    = string
 }
 
-variable "redis_security_group_ids" {
-  type = list(string)
-}
-
-variable "redis_subnet_ids" {
-  type = list(string)
-}
-
-variable "redis_node_type" {
-  type    = string
-}
-
-variable "redis_num_cache_nodes" {
-  type    = number
-}
-
-variable "redis_parameter_group_name" {
-  type    = string
-}
-
 variable "redis_engine" {
   type    = string
 }
 
 variable "redis_version" {
-  type    = string
-}
-
-variable "redis_retention_limit" {
-  type    = string
-}
-
-variable "redis_snapshot_window" {
-  type    = string
-}
-
-variable "redis_maintenance_window" {
   type    = string
 }
 ###############
