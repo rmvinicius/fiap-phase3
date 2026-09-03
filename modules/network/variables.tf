@@ -40,7 +40,7 @@ variable "subnets" {
   description = "Map with name, CIDR and AZ for each subnet"
 }
 
-variable "enable_nat_gateway" {
+variable "eip_enable_nat_gateway" {
   type        = bool
   default     = true
   description = "Enable NAT Gateway for private subnets"

@@ -5,7 +5,7 @@ module "network" {
   vpc_instance_tenancy = var.vpc_instance_tenancy
   aws_region = var.aws_region
   subnets  = var.subnets
-  enable_nat_gateway   = var.enable_nat_gateway
+  eip_enable_nat_gateway   = var.eip_enable_nat_gateway
   vpc_name = var.vpc_name
   environment = var.environment
   igw_name = var.igw_name
@@ -20,10 +20,15 @@ module "network" {
 }
 
 module "sqs" {
-  source = "./modules/sqs"
-  environment = var.environment
-  sqs_name = var.sqs_name
-  aws_region = var.aws_region
+  source                          = "./modules/sqs"
+  environment                     = var.environment
+  sqs_name                        = var.sqs_name
+  sqs_delay_seconds               = var.sqs_delay_seconds
+  sqs_max_message_size            = var.sqs_max_message_size
+  sqs_message_retention_seconds   = var.sqs_message_retention_seconds
+  sqs_receive_wait_time_seconds   = var.sqs_receive_wait_time_seconds
+  sqs_visibility_timeout_seconds  = var.sqs_visibility_timeout_seconds
+  sqs_max_receive_count           = var.sqs_max_receive_count
 }
 
 module "rds" {

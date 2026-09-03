@@ -1,29 +1,31 @@
-variable "delay_seconds" {
-  type    = number
-  default = 0
+variable "environment" {
+  type = string
 }
 
-variable "max_message_size" {
-  type    = number
-  default = 256
+variable "sqs_name" {
+  type = string
 }
 
-variable "message_retention_seconds" {
+variable "sqs_delay_seconds" {
   type    = number
-  default = 86400
 }
 
-variable "receive_wait_time_seconds" {
+variable "sqs_max_message_size" {
   type    = number
-  default = 0
 }
 
-variable "visibility_timeout_seconds" {
+variable "sqs_message_retention_seconds" {
   type    = number
-  default = 30
 }
 
-variable "max_receive_count" {
+variable "sqs_receive_wait_time_seconds" {
   type    = number
-  default = 4
+}
+
+variable "sqs_visibility_timeout_seconds" {
+  type    = number
+}
+
+variable "sqs_max_receive_count" {
+  type    = number
 }

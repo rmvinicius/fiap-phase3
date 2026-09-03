@@ -43,7 +43,7 @@ variable "subnets" {
   description = "Map with name, CIDR and AZ for each subnet"
 }
 
-variable "enable_nat_gateway" {
+variable "eip_enable_nat_gateway" {
   type        = bool
   default     = true
   description = "Enable NAT Gateway for private subnets"
@@ -73,7 +73,31 @@ variable "security_group_pub_description" {
 
 # SQS
 variable "sqs_name" {
-    type = string
+  type = string
+}
+
+variable "sqs_delay_seconds" {
+  type    = number
+}
+
+variable "sqs_max_message_size" {
+  type    = number
+}
+
+variable "sqs_message_retention_seconds" {
+  type    = number
+}
+
+variable "sqs_receive_wait_time_seconds" {
+  type    = number
+}
+
+variable "sqs_visibility_timeout_seconds" {
+  type    = number
+}
+
+variable "sqs_max_receive_count" {
+  type    = number
 }
 
 # RDS Postgres

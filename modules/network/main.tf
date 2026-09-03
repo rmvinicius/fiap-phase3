@@ -35,7 +35,7 @@ resource "aws_internet_gateway" "igw" {
 
 ### ELASTIC IP FOR NAT GATEWAY
 resource "aws_eip" "nat_eip" {
-  count  = var.enable_nat_gateway ? 1 : 0
+  count  = var.eip_enable_nat_gateway ? 1 : 0
   domain = "vpc"
 
   tags = {
@@ -49,7 +49,7 @@ resource "aws_eip" "nat_eip" {
 
 ### NAT GATEWAY (placed in public subnet)
 resource "aws_nat_gateway" "nat_gw" {
-  count         = var.enable_nat_gateway ? 1 : 0
+  count         = var.eip_enable_nat_gateway ? 1 : 0
   allocation_id = aws_eip.nat_eip[0].id
   subnet_id     = aws_subnet.subnets["snet-dev-pub-1a"].id
 
@@ -87,7 +87,7 @@ resource "aws_route_table" "private" {
 
   # Only add NAT route if enabled, otherwise no default route
   dynamic "route" {
-    for_each = var.enable_nat_gateway ? [1] : []
+    for_each = var.eip_enable_nat_gateway ? [1] : []
     content {
       cidr_block     = "0.0.0.0/0"
       nat_gateway_id = aws_nat_gateway.nat_gw[0].id

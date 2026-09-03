@@ -13,7 +13,7 @@ aws_region    = "us-east-1"
 ### NETWORK
 vpc_ipv4_block = "10.0.0.0/16"
 vpc_instance_tenancy = "default"
-enable_nat_gateway   = true
+eip_enable_nat_gateway   = true
 subnets = {
     "snet-dev-aks-1a" = { cidr = "10.0.0.0/23", az = "us-east-1a" }
     "snet-dev-aks-1b" = { cidr = "10.0.2.0/23", az = "us-east-1b" }
@@ -30,6 +30,12 @@ security_group_pub_description = "Security group for public network"
 
 ### SQS
 sqs_name = "queue-toggle-master"
+sqs_delay_seconds = 0
+sqs_max_message_size = 256
+sqs_message_retention_seconds = 86400
+sqs_receive_wait_time_seconds = 0
+sqs_visibility_timeout_seconds = 30
+sqs_max_receive_count = 4
 
 ### RDS POSTGRES
 rds_database_instances = 
