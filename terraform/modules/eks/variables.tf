@@ -22,5 +22,4 @@ variable "eks_node_groups" {
     min_size      = number
     max_size      = number
   }))
-  default = []
 }

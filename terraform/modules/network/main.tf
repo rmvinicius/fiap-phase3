@@ -41,8 +41,6 @@ resource "aws_eip" "nat_eip" {
     Name        = var.eip_name
     Environment = var.environment
   }
-
-  # EIP depends on IGW for the NAT to work
   depends_on = [aws_internet_gateway.igw]
 }
 

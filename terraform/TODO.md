@@ -27,14 +27,14 @@ export AWS_SESSION_TOKEN="IQoJb3JpZ2luX2VjEC0aCXVzLXdlc3QtMiJGMEQCIBw8BgTDe2TOa/
 docker run -it -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" -e AWS_SESSION_TOKEN="$AWS_SESSION_TOKEN" -v ./:/workspace terraform-local:1.0 /bin/bash
 
 # terraform commands
-terraform init -backend-config="backend/dev-backend.tfvars"
+terraform init -backend-config="bootstrap/remote/dev-backend.tfvars"
 use --reconfigure ### Usar somente para alterar ambientes
 
 terraform validate
 
-terraform plan -var-file="environments/dev.tfvars"
+terraform plan -var-file="environment/dev.tfvars"
 
-terraform apply -var-file="environments/dev.tfvars"
+terraform apply -var-file="environment/dev.tfvars"
 
-terraform plan -destroy -var-file="environments/dev.tfvars"
-terraform destroy -var-file="environments/dev.tfvars"
+terraform plan -destroy -var-file="environment/dev.tfvars"
+terraform destroy -var-file="environment/dev.tfvars"

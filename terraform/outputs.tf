@@ -1,6 +1,4 @@
-###############
 ### NETWORK Output
-###############
 output "vpc_id" {
   value = module.network.vpc_id
 }
@@ -40,19 +38,13 @@ output "sg_private_id" {
 output "sg_public_id" {
   value = module.network.sg_public_id
 }
-###############
 
-###############
 ### SQS Output
-###############
 output "sqs_id" {
     value = module.sqs.sqs_id
 }
-###############
 
-###############
 ### DYNAMODB Output
-###############
 output "table_name" {
     value = module.dynamodb.table_name
 }
@@ -64,11 +56,8 @@ output "table_arn" {
 output "table_id" {
     value = module.dynamodb.table_id
 }
-###############
 
-###############
 ### EKS Output
-###############
 output "cluster_endpoint" {
   value = module.eks.cluster_endpoint
 }
@@ -84,11 +73,8 @@ output "cluster_name" {
 output "cluster_arn" {
   value = module.eks.cluster_arn
 }
-###############
 
-###############
 ### RDS Output
-###############
 output "database_endpoints" {
   value = module.rds.database_endpoints
 }
@@ -97,10 +83,7 @@ output "database_arns" {
   value = module.rds.database_arns
 }
 
-###############
 ### RDS Output
-###############
 output "redis_endpoint" {
   value = module.redis.redis_endpoint
 }
-###############

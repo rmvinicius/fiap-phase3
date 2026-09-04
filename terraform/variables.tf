@@ -1,20 +1,14 @@
-###############
 ### TAGS
-###############
 variable "environment" {
     type = string
 }
 
-###############
 ### REGION
-###############
 variable "aws_region" {
     type = string
 }
 
-###############
 ### NETWORK
-###############
 variable "vpc_name" {
     type = string
 }
@@ -57,7 +51,7 @@ variable "eip_enable_nat_gateway" {
   description = "Enable NAT Gateway for private subnets"
 }
 
-# SECURITY GROUP
+### SECURITY GROUP
 variable "security_group_priv_name" {
   type        = string
   description = "Name of the private security group"
@@ -77,11 +71,8 @@ variable "security_group_pub_description" {
   type        = string
   description = "Name of the public security group"
 }
-###############
 
-###############
 ### SQS
-###############
 variable "sqs_name" {
   type = string
 }
@@ -109,11 +100,8 @@ variable "sqs_visibility_timeout_seconds" {
 variable "sqs_max_receive_count" {
   type    = number
 }
-###############
 
-###############
 ### RDS Postgres
-###############
 variable "rds_database_instances" {
   type = list(object({
     name     = string
@@ -151,11 +139,7 @@ variable "rds_subnet_name" {
   type    = string
 }
 
-###############
-
-###############
 ### EKS
-###############
 variable "eks_cluster_name" {
   type    = string
 }
@@ -173,11 +157,8 @@ variable "eks_node_groups" {
     max_size      = number
   }))
 }
-###############
 
-###############
 ### DYNAMODB
-###############
 variable "dynamodb_table_name" {
   type    = string
 }
@@ -209,11 +190,8 @@ variable "dynamodb_attributes" {
     type = string
   }))
 }
-###############
 
-###############
 ### REDIS
-###############
 variable "redis_cache_name" {
   type    = string
 }
@@ -229,4 +207,3 @@ variable "redis_engine" {
 variable "redis_version" {
   type    = string
 }
-###############

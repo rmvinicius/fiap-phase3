@@ -1,6 +1,4 @@
-###############
 ### MODULE NETWORK
-###############
 module "network" {
   source   = "./modules/network"
   vpc_ipv4_block = var.vpc_ipv4_block
@@ -19,11 +17,8 @@ module "network" {
   security_group_pub_name = var.security_group_pub_name
   security_group_pub_description = var.security_group_pub_description
 }
-###############
 
-###############
 ### MODULE SQS
-###############
 module "sqs" {
   source                          = "./modules/sqs"
   environment                     = var.environment
@@ -35,11 +30,8 @@ module "sqs" {
   sqs_visibility_timeout_seconds  = var.sqs_visibility_timeout_seconds
   sqs_max_receive_count           = var.sqs_max_receive_count
 }
-###############
 
-###############
 ### MODULE RDS
-###############
 module "rds" {
   source                    = "./modules/rds"
   environment               = var.environment
@@ -53,11 +45,8 @@ module "rds" {
   rds_subnet_name           = var.rds_subnet_name
   rds_subnet_ids            = module.network.rds_subnet_ids
 }
-###############
 
-###############
 ### MODULE EKS
-###############
 module "eks" {
   source              = "./modules/eks"
   environment         = var.environment
@@ -66,11 +55,8 @@ module "eks" {
   eks_subnet_ids      = module.network.eks_subnet_ids
   eks_node_groups     = var.eks_node_groups
 }
-###############
 
-###############
 ### MODULE DYNAMODB
-###############
 module "dynamodb" {
   source = "./modules/dynamodb"
   environment = var.environment
@@ -82,11 +68,8 @@ module "dynamodb" {
   dynamodb_range_key = var.dynamodb_range_key
   dynamodb_attributes = var.dynamodb_attributes
 }
-###############
 
-###############
 ### MODULE REDIS
-###############
 module "redis" {
   source                       = "./modules/redis"
   environment                  = var.environment
@@ -97,4 +80,3 @@ module "redis" {
   redis_engine                 = var.redis_engine
   redis_version                = var.redis_version
 }
-###############
