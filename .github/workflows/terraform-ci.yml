@@ -15,7 +15,7 @@ on:
 
 jobs:
   terraform-plan:
-    name: "Terraform Plan · ${{ steps.resolve.outputs.TF_ENV }}"
+    name: "Terraform Plan · ${{ matrix.env }}"
     runs-on: ubuntu-latest
     env:
       AWS_REGION: "us-east-1"
