@@ -1,0 +1,88 @@
+name: "🐍 Reusable · Python MS"
+
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        description: "Microservice name (used for image tag and labels)"
+        required: true
+        type: string
+      working-dir:
+        description: "Path to the service in the repo (e.g. ms/flag-service)"
+        required: true
+        type: string
+      python-version:
+        description: "Python version"
+        required: false
+        type: string
+        default: "3.12"
+      push-image:
+        description: "Whether to build and push the Docker image"
+        required: false
+        type: boolean
+        default: false
+      ecr-registry:
+        description: "ECR registry URL (no trailing slash)"
+        required: false
+        type: string
+        default: ""
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: false
+      AWS_SECRET_ACCESS_KEY:
+        required: false
+      AWS_SESSION_TOKEN:
+        required: false
+
+jobs:
+  python-ms:
+    name: "🐍 ${{ inputs.service-name }}"
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v7
+
+      - name: 🔧 Setup Python ${{ inputs.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: pip
+          cache-dependency-path: ${{ inputs.working-dir }}/requirements.txt
+
+      - name: 📦 Install dependencies
+        working-directory: ${{ inputs.working-dir }}
+        run: pip install -r requirements.txt
+
+      - name: 🔍 Lint (ruff)
+        working-directory: ${{ inputs.working-dir }}
+        run: |
+          pip install ruff
+          ruff check .
+
+      - name: 🧪 Test (pytest)
+        working-directory: ${{ inputs.working-dir }}
+        run: |
+          pip install pytest
+          pytest
+
+      - name: 🔧 Configure AWS
+        if: inputs.push-image
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token:     ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+
+      - name: 🐳 Login to ECR
+        if: inputs.push-image
+        run: |
+          aws ecr get-login-password --region us-east-1 | \
+            docker login --username AWS --password-stdin ${{ inputs.ecr-registry }}
+
+      - name: 🐳 Build & push image
+        if: inputs.push-image
+        working-directory: ${{ inputs.working-dir }}
+        run: |
+          docker build -t ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:${{ github.sha }} .
+          docker push    ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:${{ github.sha }}

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: analytics-service-configmap
+  namespace: application
+data:
+  PORT: "8005"
+  AWS_SQS_URL: "https://sqs.us-east-1.amazonaws.com/076892642827/queue-toggle-master"
+  AWS_SQS_ENDPOINT: "https://sqs.us-east-1.amazonaws.com"
+  AWS_DYNAMODB_TABLE: "ToggleMasterAnalytics"
+  AWS_DYNAMODB_ENDPOINT: "https://dynamodb.us-east-1.amazonaws.com"
+  AWS_REGION: "us-east-1"

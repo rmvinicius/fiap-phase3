@@ -1,0 +1,86 @@
+name: "🔵 Reusable · Go MS"
+
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        description: "Microservice name (used for image tag and labels)"
+        required: true
+        type: string
+      working-dir:
+        description: "Path to the service in the repo (e.g. ms/auth-service)"
+        required: true
+        type: string
+      go-version:
+        description: "Go version"
+        required: false
+        type: string
+        default: "1.23"
+      push-image:
+        description: "Whether to build and push the Docker image"
+        required: false
+        type: boolean
+        default: false
+      ecr-registry:
+        description: "ECR registry URL (no trailing slash)"
+        required: false
+        type: string
+        default: ""
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: false
+      AWS_SECRET_ACCESS_KEY:
+        required: false
+      AWS_SESSION_TOKEN:
+        required: false
+
+jobs:
+  go-ms:
+    name: "🔵 ${{ inputs.service-name }}"
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v7
+
+      - name: 🔧 Setup Go ${{ inputs.go-version }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ inputs.go-version }}
+          cache: true
+          cache-dependency-path: ${{ inputs.working-dir }}/go.sum
+
+      - name: 📦 Download modules
+        working-directory: ${{ inputs.working-dir }}
+        run: go mod download
+
+      - name: 🔍 Lint (golangci-lint)
+        working-directory: ${{ inputs.working-dir }}
+        run: |
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+          golangci-lint run
+
+      - name: 🧪 Test
+        working-directory: ${{ inputs.working-dir }}
+        run: go test ./...
+
+      - name: 🔧 Configure AWS
+        if: inputs.push-image
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token:     ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+
+      - name: 🐳 Login to ECR
+        if: inputs.push-image
+        run: |
+          aws ecr get-login-password --region us-east-1 | \
+            docker login --username AWS --password-stdin ${{ inputs.ecr-registry }}
+
+      - name: 🐳 Build & push image
+        if: inputs.push-image
+        working-directory: ${{ inputs.working-dir }}
+        run: |
+          docker build -t ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:${{ github.sha }} .
+          docker push    ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:${{ github.sha }}
