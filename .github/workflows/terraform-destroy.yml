@@ -7,12 +7,14 @@ on:
         description: "Target environment to destroy"
         required: true
         type: choice
-        options: [ dev, stg, prod ]
+        options: [ DEV, STG, PRD ]
 
 jobs:
   destroy:
     name: "Destroy · ${{ inputs.environment }}"
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: "us-east-1"
     environment: ${{ inputs.environment }}
     steps:
       - name: Checkout
@@ -24,10 +26,10 @@ jobs:
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          aws-access-key-id:     ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}',     inputs.environment | upper)] }}
+          aws-access-key-id:     ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}', inputs.environment)] }}
           aws-secret-access-key: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', inputs.environment | upper)] }}
-          aws-session-token:     ${{ secrets[format('AWS_SESSION_TOKEN_{0}',     inputs.environment | upper)] }}
-          aws-region:            us-east-1
+          aws-session-token:     ${{ secrets[format('AWS_SESSION_TOKEN_{0}', inputs.environment | upper)] }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Init
         working-directory: terraform
