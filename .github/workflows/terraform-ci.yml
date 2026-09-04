@@ -3,8 +3,14 @@ name: terraform-apply
 on:
   push:
     branches: [ develop, staging, main ]
+    paths:
+      - 'terraform/**'
+      - '.github/workflows/terraform-ci.yml'
   pull_request:
     branches: [ develop, staging, main ]
+    paths:
+      - 'terraform/**'
+      - '.github/workflows/terraform-ci.yml'
   workflow_dispatch:
     inputs:
       environment:
