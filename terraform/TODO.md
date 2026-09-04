@@ -19,9 +19,9 @@ aws dynamodb create-table \
 docker build -t terraform-local:1.0 .
 
 # Export AWS Lab variables
-export AWS_ACCESS_KEY_ID="ASIAYWVTVGGLIN7MNF3D"
-export AWS_SECRET_ACCESS_KEY="Pu3W3PgG9h5n34zpXM2L1swl8X03nslA8TRrNoxK"
-export AWS_SESSION_TOKEN="IQoJb3JpZ2luX2VjEBoaCXVzLXdlc3QtMiJGMEQCIGthrQAbeB57fAGtpYZJIcOQ4ESeXr+iIGHcWUWguyiZAiBVzc+IagZJ6+gu8whKxmvYl8GPupF4u+8t9y0IM7xA+CrBAgjj//////////8BEAEaDDU5ODQ1MDk3NTEyNiIMKWeHKGhiQf/ED9fTKpUCO7zbJQWgpOqvZ1qmAs6LERcjJtH4k3whbH9ZO6VvFlx8G7W+H/ZXE05oW1iL7Fz9jVOmRBOuh13nDGr1V8IhTwnLd5Ms0qhkpOlTGj7N+Os6+NI+jZHC7qXmdNsct+PvgkuKugrD86Sp3eoaU0Sn/HLYDz4Yxl4rzptNcf4jYiv39DeXQ0BX7DIO+UAn4YnQrOo2rPe/tKY43wKl2r1C7VORllLnqfTh6J12ANskTvr0KZbt6Ty+Guvwo61ZuZfjQdf4GTIqc7D6rd9sksXrJlqrNBg8upq9PGE1vg3mXRwn7dtgoIb+3/nJCmpsUeuorgfGcvJVujOJ/KLDPuCHark4iEaITm1q8Qku7HTit8k38l1LQzDN3ebUBjqeAbSEqX7LDjNFvbVk+DImmnu5pSjmCxht6KI5TnEXZFpQPK3O78iGEY3JcnMmxyYVS9qu1YVS5KmPU5KyeSLR5NIgUEywHfgAQA3rCgr62Sf1GFBy1RXHJSJbmf+o6TACZDTgoZB66CMcfgQH2YuomsDwndngcDVNEWQHGz3mgLmHiHTkPxzjD1UU5q6/ZezWBru/n65xckIUflYCxIbY"
+export AWS_ACCESS_KEY_ID="ASIAYWVTVGGLOUD5UJ22"
+export AWS_SECRET_ACCESS_KEY="hUC2tffipA7qv0/vqF/5StZce+i3O/DPKwv652rM"
+export AWS_SESSION_TOKEN="IQoJb3JpZ2luX2VjEC0aCXVzLXdlc3QtMiJGMEQCIBw8BgTDe2TOa/co4kB7NdLjWlUolxfOqy8KPP6kskGxAiBDCxfzQdGckewfcX3nQY1yY5zIjWepy5vIO/7pitUwhCrBAgj2//////////8BEAEaDDU5ODQ1MDk3NTEyNiIMWvIaAyDc+D/c0cfeKpUCYGT/+YMaw12Rrxg+Inj7ykmc32UwheR98ijClEYydRnBl7TPaCTlutalegqh2u0TKvDqI62yzzzceqdSJujg5+VAcuHO4RKS0BJH8BINtRxUPymXqIk2eZIXazhM+jpOLIBLkjqWGzxPddXXi8TMHy/dZn2qnnakPpnBMYQqrKAXaGXS/6x8PGLvNuE2mHhZT9I4wTkc4pUQwfdG+531pRRSZdJSDkUxJJWKiOXRcK1PveNc8WuRt1WZ8SO7HxRHeL0KoVeps9TzggN8e9cv8Z+UG6NR+ULHeJCfcQQdLRSoQm+4M46lh3e3aiHSkouD2Awm0n19vx/jkJzvgM+a2eqX9ys2nS8cjG0cdbDQfgRR6mdGdzCo8+rUBjqeAZzsxfUb54b6ABugCeqs/7GPc9aunxXaGLWET1YaJLTYQOcgJgf08K4VDF8BRXLACvuzYGWvxpuYvbwQI58TtqGA36FF+47NjytP8cEzIhiYzx4nT3x+fvW6U01DO42Nlr8l49b1wgzCi037HDVdjUs246E2F8BcPaEPPFnRFhmsk6cgDLhH6KANDHxHDucRes4531ZYz0Borhaf1pSQ"
 
 # Run the container to execute terraform
 docker run -it -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" -e AWS_SESSION_TOKEN="$AWS_SESSION_TOKEN" -v ./:/workspace terraform-local:1.0 /bin/bash
@@ -29,6 +29,8 @@ docker run -it -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" -e AWS_SECRET_ACCESS_KE
 # terraform commands
 terraform init -backend-config="backend/dev-backend.tfvars"
 use --reconfigure ### Usar somente para alterar ambientes
+
+terraform validate
 
 terraform plan -var-file="environments/dev.tfvars"
 
