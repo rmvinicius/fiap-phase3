@@ -1,0 +1,42 @@
+name: terraform-destroy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment to destroy"
+        required: true
+        type: choice
+        options: [ dev, stg, prod ]
+
+jobs:
+  destroy:
+    name: "Destroy · ${{ inputs.environment }}"
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id:     ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}',     inputs.environment | upper)] }}
+          aws-secret-access-key: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', inputs.environment | upper)] }}
+          aws-session-token:     ${{ secrets[format('AWS_SESSION_TOKEN_{0}',     inputs.environment | upper)] }}
+          aws-region:            us-east-1
+
+      - name: Init
+        working-directory: terraform
+        run: terraform init -backend-config="bootstrap/remote/${{ inputs.environment }}-backend.tfvars"
+
+      - name: Plan destroy
+        working-directory: terraform
+        run: terraform plan -destroy -var-file="environment/${{ inputs.environment }}.tfvars" -no-color -out=tfplan-destroy
+
+      - name: Apply destroy
+        working-directory: terraform
+        run: terraform apply -auto-approve tfplan-destroy
