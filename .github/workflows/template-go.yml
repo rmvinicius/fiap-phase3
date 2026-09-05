@@ -1,4 +1,4 @@
-name: "🐍 Reusable · Python MS"
+name: "🔵 Template · Go"
 
 on:
   workflow_call:
@@ -8,14 +8,14 @@ on:
         required: true
         type: string
       working-dir:
-        description: "Path to the service in the repo (e.g. ms/flag-service)"
+        description: "Path to the service in the repo (e.g. ms/auth-service)"
         required: true
         type: string
-      python-version:
-        description: "Python version"
+      go-version:
+        description: "Go version"
         required: false
         type: string
-        default: "3.12"
+        default: "1.23"
       push-image:
         description: "Whether to build and push the Docker image"
         required: false
@@ -35,35 +35,33 @@ on:
         required: false
 
 jobs:
-  python-ms:
-    name: "🐍 ${{ inputs.service-name }}"
+  go-ms:
+    name: "🔵 ${{ inputs.service-name }}"
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v7
 
-      - name: 🔧 Setup Python ${{ inputs.python-version }}
-        uses: actions/setup-python@v5
+      - name: 🔧 Setup Go ${{ inputs.go-version }}
+        uses: actions/setup-go@v5
         with:
-          python-version: ${{ inputs.python-version }}
-          cache: pip
-          cache-dependency-path: ${{ inputs.working-dir }}/requirements.txt
+          go-version: ${{ inputs.go-version }}
+          cache: true
+          cache-dependency-path: ${{ inputs.working-dir }}/go.sum
 
-      - name: 📦 Install dependencies
+      - name: 📦 Download modules
         working-directory: ${{ inputs.working-dir }}
-        run: pip install -r requirements.txt
+        run: go mod download
 
-      - name: 🔍 Lint (ruff)
-        working-directory: ${{ inputs.working-dir }}
-        run: |
-          pip install ruff
-          ruff check .
-
-      - name: 🧪 Test (pytest)
+      - name: 🔍 Lint (golangci-lint)
         working-directory: ${{ inputs.working-dir }}
         run: |
-          pip install pytest
-          pytest
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+          golangci-lint run
+
+      - name: 🧪 Test
+        working-directory: ${{ inputs.working-dir }}
+        run: go test ./...
 
       - name: 🔧 Configure AWS
         if: inputs.push-image
