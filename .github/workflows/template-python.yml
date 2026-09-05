@@ -67,7 +67,7 @@ jobs:
         working-directory: ${{ inputs.working-dir }}
         run: |
           pip install bandit
-          bandit -r . --severity-level HIGH
+          bandit -r . --severity-level high
 
       - name: 🔍 SCA (trivy fs)
         working-directory: ${{ inputs.working-dir }}
