@@ -20,6 +20,10 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v7
 
+      - name: 🔍 Resolve environment (lowercase)
+        id: env-lower
+        run: echo "LOWER=$(echo '${{ inputs.environment }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
       - name: 🔧 Setup Terraform
         uses: hashicorp/setup-terraform@v4
 
@@ -33,11 +37,11 @@ jobs:
 
       - name: 🔧 Init
         working-directory: terraform
-        run: terraform init -backend-config="bootstrap/remote/${{ toLowerCase(inputs.environment) }}-backend.tfvars"
+        run: terraform init -backend-config="bootstrap/remote/${{ steps.env-lower.outputs.LOWER }}-backend.tfvars"
 
       - name: 📋 Plan destroy
         working-directory: terraform
-        run: terraform plan -destroy -var-file="environment/${{ toLowerCase(inputs.environment) }}.tfvars" -no-color -out=tfplan-destroy
+        run: terraform plan -destroy -var-file="environment/${{ steps.env-lower.outputs.LOWER }}.tfvars" -no-color -out=tfplan-destroy
 
       - name: ⚙️ Apply destroy
         working-directory: terraform

@@ -34,14 +34,16 @@ jobs:
         id: resolve
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "ENV=${{ inputs.environment }}" >> "$GITHUB_OUTPUT"
+            ENV_VAL="${{ inputs.environment }}"
           else
             case "${{ github.ref_name }}" in
-              develop) echo "ENV=DEV"  >> "$GITHUB_OUTPUT" ;;
-              staging) echo "ENV=STG"  >> "$GITHUB_OUTPUT" ;;
-              main)    echo "ENV=PRD" >> "$GITHUB_OUTPUT" ;;
+              develop) ENV_VAL=DEV ;;
+              staging)  ENV_VAL=STG ;;
+              main)     ENV_VAL=PRD ;;
             esac
           fi
+          echo "ENV=${ENV_VAL}" >> "$GITHUB_OUTPUT"
+          echo "ENV_LOWER=$(echo "${ENV_VAL}" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
 
       - name: 🔧 Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -89,7 +91,7 @@ jobs:
 
       - name: 🔧 Init
         working-directory: terraform
-        run: terraform init -backend-config="bootstrap/remote/${{ toLowerCase(steps.resolve.outputs.ENV) }}-backend.tfvars"
+        run: terraform init -backend-config="bootstrap/remote/${{ steps.resolve.outputs.ENV_LOWER }}-backend.tfvars"
 
       - name: ✅ Validate
         working-directory: terraform
@@ -97,7 +99,7 @@ jobs:
 
       - name: 📋 Plan
         working-directory: terraform
-        run: terraform plan -var-file="environment/${{ toLowerCase(steps.resolve.outputs.ENV) }}.tfvars" -no-color -out=tfplan
+        run: terraform plan -var-file="environment/${{ steps.resolve.outputs.ENV_LOWER }}.tfvars" -no-color -out=tfplan
 
       - name: 📤 Upload tfplan artifact
         uses: actions/upload-artifact@v4
@@ -110,4 +112,4 @@ jobs:
       - name: ⚙️ Apply
         if: github.event_name == 'workflow_dispatch'
         working-directory: terraform
-        run: terraform apply -auto-approve -var-file="environment/${{ toLowerCase(steps.resolve.outputs.ENV) }}.tfvars"
+        run: terraform apply -auto-approve -var-file="environment/${{ steps.resolve.outputs.ENV_LOWER }}.tfvars"
