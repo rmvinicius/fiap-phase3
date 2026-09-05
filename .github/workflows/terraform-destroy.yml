@@ -1,4 +1,4 @@
-name: "💥 terraform-destroy"
+name: "💥 Terraform-destroy"
 
 on:
   workflow_dispatch:
@@ -33,11 +33,11 @@ jobs:
 
       - name: 🔧 Init
         working-directory: terraform
-        run: terraform init -backend-config="bootstrap/remote/${{ inputs.environment }}-backend.tfvars"
+        run: terraform init -backend-config="bootstrap/remote/${{ toLowerCase(inputs.environment) }}-backend.tfvars"
 
       - name: 📋 Plan destroy
         working-directory: terraform
-        run: terraform plan -destroy -var-file="environment/${{ inputs.environment }}.tfvars" -no-color -out=tfplan-destroy
+        run: terraform plan -destroy -var-file="environment/${{ toLowerCase(inputs.environment) }}.tfvars" -no-color -out=tfplan-destroy
 
       - name: ⚙️ Apply destroy
         working-directory: terraform

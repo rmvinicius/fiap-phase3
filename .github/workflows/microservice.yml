@@ -61,6 +61,7 @@ jobs:
       flag:       ${{ steps.filter.outputs.flag }}
       targeting:  ${{ steps.filter.outputs.targeting }}
       environment: ${{ steps.resolve.outputs.ENV }}
+      ecr_registry: ${{ steps.set-ecr.outputs.registry }}
     steps:
       - name: 📥 Checkout (full history)
         uses: actions/checkout@v7
@@ -79,6 +80,12 @@ jobs:
               main)     echo "ENV=PRD" >> "$GITHUB_OUTPUT" ;;
             esac
           fi
+
+      - name: 🔐 Set ECR registry
+        id: set-ecr
+        env:
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+        run: echo "registry=${ECR_REGISTRY}" >> "$GITHUB_OUTPUT"
 
       - name: 🔍 Filter changed paths
         id: filter
@@ -111,7 +118,7 @@ jobs:
       working-dir: ms/analytics-service
       environment: ${{ needs.changes.outputs.environment }}
       push-image: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      ecr-registry: ${{ secrets.ECR_REGISTRY }}
+      ecr-registry: ${{ needs.changes.outputs.ecr_registry }}
     secrets: inherit
 
   flag-service:
@@ -126,7 +133,7 @@ jobs:
       working-dir: ms/flag-service
       environment: ${{ needs.changes.outputs.environment }}
       push-image: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      ecr-registry: ${{ secrets.ECR_REGISTRY }}
+      ecr-registry: ${{ needs.changes.outputs.ecr_registry }}
     secrets: inherit
 
   targeting-service:
@@ -141,7 +148,7 @@ jobs:
       working-dir: ms/targeting-service
       environment: ${{ needs.changes.outputs.environment }}
       push-image: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      ecr-registry: ${{ secrets.ECR_REGISTRY }}
+      ecr-registry: ${{ needs.changes.outputs.ecr_registry }}
     secrets: inherit
 
   # ===========================================================================
@@ -159,7 +166,7 @@ jobs:
       working-dir: ms/auth-service
       environment: ${{ needs.changes.outputs.environment }}
       push-image: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      ecr-registry: ${{ secrets.ECR_REGISTRY }}
+      ecr-registry: ${{ needs.changes.outputs.ecr_registry }}
     secrets: inherit
 
   evaluation-service:
@@ -174,5 +181,5 @@ jobs:
       working-dir: ms/evaluation-service
       environment: ${{ needs.changes.outputs.environment }}
       push-image: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      ecr-registry: ${{ secrets.ECR_REGISTRY }}
+      ecr-registry: ${{ needs.changes.outputs.ecr_registry }}
     secrets: inherit

@@ -1,4 +1,4 @@
-name: "🌍 terraform-apply"
+name: "🌍 Terraform Plan/Apply"
 
 on:
   push:
@@ -89,7 +89,7 @@ jobs:
 
       - name: 🔧 Init
         working-directory: terraform
-        run: terraform init -backend-config="bootstrap/remote/${{ steps.resolve.outputs.ENV }}-backend.tfvars"
+        run: terraform init -backend-config="bootstrap/remote/${{ toLowerCase(steps.resolve.outputs.ENV) }}-backend.tfvars"
 
       - name: ✅ Validate
         working-directory: terraform
@@ -97,7 +97,7 @@ jobs:
 
       - name: 📋 Plan
         working-directory: terraform
-        run: terraform plan -var-file="environment/${{ steps.resolve.outputs.ENV }}.tfvars" -no-color -out=tfplan
+        run: terraform plan -var-file="environment/${{ toLowerCase(steps.resolve.outputs.ENV) }}.tfvars" -no-color -out=tfplan
 
       - name: 📤 Upload tfplan artifact
         uses: actions/upload-artifact@v4
@@ -110,4 +110,4 @@ jobs:
       - name: ⚙️ Apply
         if: github.event_name == 'workflow_dispatch'
         working-directory: terraform
-        run: terraform apply -auto-approve -var-file="environment/${{ steps.resolve.outputs.ENV }}.tfvars"
+        run: terraform apply -auto-approve -var-file="environment/${{ toLowerCase(steps.resolve.outputs.ENV) }}.tfvars"
