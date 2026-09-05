@@ -1,4 +1,4 @@
-name: "💥 Terraform-destroy"
+name: "💥 Terraform Destroy"
 
 on:
   workflow_dispatch:
@@ -8,6 +8,7 @@ on:
         required: true
         type: choice
         options: [ DEV, STG, PRD ]
+        default: DEV
 
 jobs:
   destroy:

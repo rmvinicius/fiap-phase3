@@ -44,7 +44,7 @@ on:
           - DEV
           - STG
           - PRD
-        default: PRD
+        default: DEV
 
 env:
   AWS_REGION: us-east-1
