@@ -80,3 +80,10 @@ module "redis" {
   redis_engine                 = var.redis_engine
   redis_version                = var.redis_version
 }
+
+### MODULE ECR
+module "ecr" {
+  source = "./modules/ecr"
+  environment = var.environment
+  ecr_repositories = var.ecr_repositories
+}

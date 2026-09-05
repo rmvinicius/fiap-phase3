@@ -1,4 +1,4 @@
-name: "Micro service"
+name: "📦 Micro service"
 
 on:
   push:
@@ -36,6 +36,15 @@ on:
           - evaluation-service
           - flag-service
           - targeting-service
+      environment:
+        description: "Target environment"
+        required: true
+        type: choice
+        options:
+          - DEV
+          - STG
+          - PRD
+        default: PRD
 
 env:
   AWS_REGION: us-east-1
@@ -43,7 +52,7 @@ env:
 
 jobs:
   changes:
-    name: Detect changes
+    name: "🔍 Detect changes"
     runs-on: ubuntu-latest
     outputs:
       analytics:  ${{ steps.filter.outputs.analytics }}
@@ -51,11 +60,25 @@ jobs:
       evaluation: ${{ steps.filter.outputs.evaluation }}
       flag:       ${{ steps.filter.outputs.flag }}
       targeting:  ${{ steps.filter.outputs.targeting }}
+      environment: ${{ steps.resolve.outputs.ENV }}
     steps:
       - name: 📥 Checkout (full history)
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
+      - name: 🔍 Resolve environment
+        id: resolve
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "ENV=${{ inputs.environment }}" >> "$GITHUB_OUTPUT"
+          else
+            case "${{ github.ref_name }}" in
+              develop) echo "ENV=DEV"  >> "$GITHUB_OUTPUT" ;;
+              staging)  echo "ENV=STG"  >> "$GITHUB_OUTPUT" ;;
+              main)     echo "ENV=PRD" >> "$GITHUB_OUTPUT" ;;
+            esac
+          fi
 
       - name: 🔍 Filter changed paths
         id: filter
@@ -86,6 +109,7 @@ jobs:
     with:
       service-name: analytics-service
       working-dir: ms/analytics-service
+      environment: ${{ needs.changes.outputs.environment }}
       push-image: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       ecr-registry: ${{ env.ECR_REGISTRY }}
     secrets: inherit
@@ -100,6 +124,7 @@ jobs:
     with:
       service-name: flag-service
       working-dir: ms/flag-service
+      environment: ${{ needs.changes.outputs.environment }}
       push-image: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       ecr-registry: ${{ env.ECR_REGISTRY }}
     secrets: inherit
@@ -114,6 +139,7 @@ jobs:
     with:
       service-name: targeting-service
       working-dir: ms/targeting-service
+      environment: ${{ needs.changes.outputs.environment }}
       push-image: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       ecr-registry: ${{ env.ECR_REGISTRY }}
     secrets: inherit
@@ -131,6 +157,7 @@ jobs:
     with:
       service-name: auth-service
       working-dir: ms/auth-service
+      environment: ${{ needs.changes.outputs.environment }}
       push-image: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       ecr-registry: ${{ env.ECR_REGISTRY }}
     secrets: inherit
@@ -145,6 +172,7 @@ jobs:
     with:
       service-name: evaluation-service
       working-dir: ms/evaluation-service
+      environment: ${{ needs.changes.outputs.environment }}
       push-image: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       ecr-registry: ${{ env.ECR_REGISTRY }}
     secrets: inherit

@@ -98,3 +98,12 @@ redis_cache_name        = "redis-dev-01"
 redis_description       = "Redis development cache"
 redis_engine            = "redis"           # or "valkey"
 redis_version           = "7.2"
+
+### ECR
+ecr_repositories = [
+  "analytics-service",
+  "flag-service",
+  "targeting-service",
+  "auth-service",
+  "evaluation-service",
+]

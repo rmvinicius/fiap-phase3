@@ -207,3 +207,8 @@ variable "redis_engine" {
 variable "redis_version" {
   type    = string
 }
+
+### ECR
+variable "ecr_repositories" {
+  type = list(string)
+}

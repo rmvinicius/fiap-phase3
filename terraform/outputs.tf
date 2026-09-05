@@ -87,3 +87,12 @@ output "database_arns" {
 output "redis_endpoint" {
   value = module.redis.redis_endpoint
 }
+
+### ECR Output
+output "ecr_registry_url" {
+  value = module.ecr.registry_url
+}
+
+output "ecr_repository_urls" {
+  value = module.ecr.repository_urls
+}

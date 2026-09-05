@@ -26,6 +26,10 @@ on:
         required: false
         type: string
         default: ""
+      environment:
+        description: "Target environment (DEV, STG, PRD) for AWS secret resolution"
+        required: true
+        type: string
     secrets:
       AWS_ACCESS_KEY_ID:
         required: false
@@ -59,6 +63,18 @@ jobs:
           pip install ruff
           ruff check .
 
+      - name: 🔍 SAST (bandit)
+        working-directory: ${{ inputs.working-dir }}
+        run: |
+          pip install bandit
+          bandit -r .
+
+      - name: 🔍 SCA (trivy fs)
+        working-directory: ${{ inputs.working-dir }}
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -g /usr/local/bin
+          trivy fs --scanners vuln,config --severity CRITICAL --exit-code 1 .
+
       - name: 🧪 Test (pytest)
         working-directory: ${{ inputs.working-dir }}
         run: |
@@ -69,9 +85,9 @@ jobs:
         if: inputs.push-image
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token:     ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-access-key-id:     ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}', inputs.environment)] }}
+          aws-secret-access-key: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', inputs.environment)] }}
+          aws-session-token:     ${{ secrets[format('AWS_SESSION_TOKEN_{0}', inputs.environment)] }}
           aws-region: us-east-1
 
       - name: 🐳 Login to ECR
@@ -84,5 +100,10 @@ jobs:
         if: inputs.push-image
         working-directory: ${{ inputs.working-dir }}
         run: |
-          docker build -t ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:${{ github.sha }} .
-          docker push    ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:${{ github.sha }}
+          docker build -t ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:v1.0.0-${{ github.sha }} .
+          docker push    ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:v1.0.0-${{ github.sha }}
+
+      - name: 🛡️ Scan image vulnerabilities (trivy)
+        if: inputs.push-image
+        run: |
+          trivy image --severity CRITICAL --exit-code 1 ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:v1.0.0-${{ github.sha }}
