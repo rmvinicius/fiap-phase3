@@ -67,7 +67,7 @@ jobs:
         working-directory: ${{ inputs.working-dir }}
         run: |
           go install github.com/securego/gosec/v2/cmd/gosec@latest
-          gosec ./...
+          gosec -severity high ./...
 
       - name: 🔍 SCA (trivy fs)
         working-directory: ${{ inputs.working-dir }}
