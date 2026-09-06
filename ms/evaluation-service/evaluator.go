@@ -9,6 +9,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"sync"
 	"time"
@@ -106,6 +107,14 @@ func (a *App) fetchFromServices(flagName string) (*CombinedFlagInfo, error) {
 func (a *App) fetchFlag(flagName string) (*Flag, error) {
 	url := fmt.Sprintf("%s/flags/%s", a.FlagServiceURL, flagName)
 
+	parsedURL, err := url.Parse(url)
+	if err != nil {
+		return nil, fmt.Errorf("erro ao parsear URL do flag-service: %w", err)
+	}
+	if parsedURL.Scheme != "http" && parsedURL.Scheme != "https" {
+		return nil, fmt.Errorf("scheme inválido no flag-service: %s", parsedURL.Scheme)
+	}
+
 	// Cliente HTTP (com timeout)
 	httpClient := &http.Client{
 		Timeout: 30 * time.Second,
@@ -114,7 +123,10 @@ func (a *App) fetchFlag(flagName string) (*Flag, error) {
 	if apiKey == "" {
 		log.Fatal("SERVICE_API_KEY deve ser definida")
 	}
-	req, _ := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", parsedURL.String(), nil)
+	if err != nil {
+		return nil, fmt.Errorf("erro ao criar requisição para flag-service: %w", err)
+	}
 	req.Header.Set("Authorization", "Bearer "+apiKey)
 	
 	resp, err := httpClient.Do(req)
@@ -143,8 +155,20 @@ func (a *App) fetchFlag(flagName string) (*Flag, error) {
 
 func (a *App) fetchRule(flagName string) (*TargetingRule, error) {
 	url := fmt.Sprintf("%s/rules/%s", a.TargetingServiceURL, flagName)
+
+	parsedURL, err := url.Parse(url)
+	if err != nil {
+		return nil, fmt.Errorf("erro ao parsear URL do targeting-service: %w", err)
+	}
+	if parsedURL.Scheme != "http" && parsedURL.Scheme != "https" {
+		return nil, fmt.Errorf("scheme inválido no targeting-service: %s", parsedURL.Scheme)
+	}
+
 	apiKey := os.Getenv("SERVICE_API_KEY") // Usa a mesma chave
-	req, _ := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", parsedURL.String(), nil)
+	if err != nil {
+		return nil, fmt.Errorf("erro ao criar requisição para targeting-service: %w", err)
+	}
 	req.Header.Set("Authorization", "Bearer "+apiKey)
 	
 	resp, err := a.HttpClient.Do(req)
