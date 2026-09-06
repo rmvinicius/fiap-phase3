@@ -92,15 +92,18 @@ jobs:
           aws-session-token:     ${{ secrets[format('AWS_SESSION_TOKEN_{0}', inputs.environment)] }}
           aws-region: us-east-1
 
-      - name: 🐳 Login to ECR
-        run: |
-          aws ecr get-login-password --region us-east-1 | \
-            docker login --username AWS --password-stdin ${{ inputs.ecr-registry }}
+      - name: 🐳 Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-      - name: 🐳 Build image
+      - name: 🐳 Build Image
         working-directory: ${{ inputs.working-dir }}
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ inputs.service-name }}
+          IMAGE_TAG: v1.0.0-${{ github.sha }}
         run: |
-          docker build -t ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:v1.0.0-${{ github.sha }} .
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
 
       - name: 🛡️ Scan image vulnerabilities (trivy)
         uses: aquasecurity/trivy-action@master
@@ -111,7 +114,12 @@ jobs:
           ignore-unfixed: true
           severity: 'CRITICAL'
 
-      - name: 🐳 Push image
+      - name: 🐳 Push Image
         working-directory: ${{ inputs.working-dir }}
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ inputs.service-name }}
+          IMAGE_TAG: v1.0.0-${{ github.sha }}
         run: |
-          docker push    ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:v1.0.0-${{ github.sha }}
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          
