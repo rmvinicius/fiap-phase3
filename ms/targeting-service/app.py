@@ -3,6 +3,7 @@ import os
 import sys
 from functools import wraps
 
+import psycopg2
 import requests
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
