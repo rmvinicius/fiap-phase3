@@ -83,7 +83,6 @@ jobs:
         run: go test ./...
 
       - name: 🔧 Configure AWS
-        if: inputs.push-image
         uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-access-key-id:     ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}', inputs.environment)] }}
@@ -92,19 +91,16 @@ jobs:
           aws-region: us-east-1
 
       - name: 🐳 Login to ECR
-        if: inputs.push-image
         run: |
           aws ecr get-login-password --region us-east-1 | \
             docker login --username AWS --password-stdin ${{ inputs.ecr-registry }}
 
       - name: 🐳 Build image
-        if: inputs.push-image
         working-directory: ${{ inputs.working-dir }}
         run: |
           docker build -t ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:v1.0.0-${{ github.sha }} .
 
       - name: 🛡️ Scan image vulnerabilities (trivy)
-        if: inputs.push-image
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: '${{ inputs.ecr-registry }}/${{ inputs.service-name }}:v1.0.0-${{ github.sha }}'
@@ -114,7 +110,6 @@ jobs:
           severity: 'CRITICAL'
 
       - name: 🐳 Push image
-        if: inputs.push-image
         working-directory: ${{ inputs.working-dir }}
         run: |
           docker push    ${{ inputs.ecr-registry }}/${{ inputs.service-name }}:v1.0.0-${{ github.sha }}
