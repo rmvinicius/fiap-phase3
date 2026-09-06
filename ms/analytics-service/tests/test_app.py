@@ -1,10 +1,10 @@
 import json
-from unittest.mock import ANY, MagicMock, patch
+from typing import ClassVar
+from unittest.mock import ANY, patch
 
 import pytest
-from flask import Flask
 
-from app import app, process_message, SQS_QUEUE_URL, DYNAMODB_TABLE_NAME
+from app import DYNAMODB_TABLE_NAME, SQS_QUEUE_URL, app, process_message
 
 
 @pytest.fixture
