@@ -37,7 +37,7 @@ class TestHealth:
 
 
 class TestCreateRule:
-    VALID_PAYLOAD: ClassVar[dict] = = {
+    VALID_PAYLOAD: ClassVar[dict] = {
         "flag_name": "new_flag",
         "rules": {"countries": ["BR", "US"]},
         "is_enabled": True
