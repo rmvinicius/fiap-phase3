@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 import sys
@@ -10,11 +9,6 @@ from psycopg2.extras import RealDictCursor, Json
 from psycopg2.pool import SimpleConnectionPool
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
-from functools import wraps
-import logging
-from flask import Flask, jsonify, request
-from psycopg2.extras import Json, RealDictCursor
-from psycopg2.pool import SimpleConnectionPool
 
 # Configura o logging
 logging.basicConfig(level=logging.INFO)

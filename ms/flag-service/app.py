@@ -9,10 +9,6 @@ from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from psycopg2.extras import RealDictCursor
 from psycopg2.pool import SimpleConnectionPool
-from flask import Flask, request, jsonify
-from dotenv import load_dotenv
-from functools import wraps
-import logging
 
 # Configura o logging
 logging.basicConfig(level=logging.INFO)
