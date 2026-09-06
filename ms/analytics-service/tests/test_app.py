@@ -23,7 +23,7 @@ class TestHealth:
 
 
 class TestProcessMessage:
-    VALID_MESSAGE = {
+    VALID_MESSAGE: ClassVar[dict] = {
         'MessageId': 'msg-123',
         'Body': json.dumps({
             'user_id': 'user-1',
