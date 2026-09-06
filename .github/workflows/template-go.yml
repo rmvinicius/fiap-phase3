@@ -93,8 +93,6 @@ jobs:
       - name: 🐳 Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-        with:
-          mask-password: 'false'
 
       - name: 🐳 Build Image
         working-directory: ${{ inputs.working-dir }}
