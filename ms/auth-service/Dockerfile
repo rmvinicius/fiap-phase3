@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY go.mod go.sum ./
 COPY *.go ./
-RUN go mod download && go mod tidy
+RUN go mod tidy && go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -o /auth-service .
 
 # STAGE RUN

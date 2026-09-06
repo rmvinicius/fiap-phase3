@@ -105,9 +105,9 @@ func (a *App) fetchFromServices(flagName string) (*CombinedFlagInfo, error) {
 
 // fetchFlag (função helper)
 func (a *App) fetchFlag(flagName string) (*Flag, error) {
-	url := fmt.Sprintf("%s/flags/%s", a.FlagServiceURL, flagName)
+	targetURL := fmt.Sprintf("%s/flags/%s", a.FlagServiceURL, flagName)
 
-	parsedURL, err := url.Parse(url)
+	parsedURL, err := url.Parse(targetURL)
 	if err != nil {
 		return nil, fmt.Errorf("erro ao parsear URL do flag-service: %w", err)
 	}
@@ -154,9 +154,9 @@ func (a *App) fetchFlag(flagName string) (*Flag, error) {
 }
 
 func (a *App) fetchRule(flagName string) (*TargetingRule, error) {
-	url := fmt.Sprintf("%s/rules/%s", a.TargetingServiceURL, flagName)
+	targetURL := fmt.Sprintf("%s/rules/%s", a.TargetingServiceURL, flagName)
 
-	parsedURL, err := url.Parse(url)
+	parsedURL, err := url.Parse(targetURL)
 	if err != nil {
 		return nil, fmt.Errorf("erro ao parsear URL do targeting-service: %w", err)
 	}
