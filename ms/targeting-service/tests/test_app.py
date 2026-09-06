@@ -1,4 +1,5 @@
 import os
+from typing import ClassVar
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -36,7 +37,7 @@ class TestHealth:
 
 
 class TestCreateRule:
-    VALID_PAYLOAD = {
+    VALID_PAYLOAD: ClassVar[dict] = = {
         "flag_name": "new_flag",
         "rules": {"countries": ["BR", "US"]},
         "is_enabled": True
@@ -62,8 +63,9 @@ class TestCreateRule:
             assert data["flag_name"] == "new_flag"
 
     def test_create_rule_duplicate(self, client, app):
-        import app as app_module
         import psycopg2
+
+        import app as app_module
         mock_conn = MagicMock()
         mock_cur = MagicMock()
         mock_cur.execute.side_effect = psycopg2.IntegrityError()

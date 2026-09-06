@@ -1,4 +1,5 @@
 import os
+from typing import ClassVar
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -36,7 +37,7 @@ class TestHealth:
 
 
 class TestCreateFlag:
-    VALID_PAYLOAD = {
+    VALID_PAYLOAD: ClassVar[dict] = {
         "name": "new_flag",
         "description": "Test flag",
         "is_enabled": True
@@ -62,8 +63,9 @@ class TestCreateFlag:
             assert data["name"] == "new_flag"
 
     def test_create_flag_duplicate(self, client, app):
-        import app as app_module
         import psycopg2
+
+        import app as app_module
         mock_conn = MagicMock()
         mock_cur = MagicMock()
         mock_cur.execute.side_effect = psycopg2.IntegrityError()
