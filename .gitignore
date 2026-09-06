@@ -5,7 +5,7 @@
 terraform/.terraform/
 terraform/.terraform*
 
-# analytics-service
-ms/analytics-service/__pycache__/*
-ms/analytics-service/.pytest_cache/*
-ms/analytics-service/tests/__pycache__/*
+# ms
+ms/*/__pycache__/*
+ms/*/.pytest_cache/*
+ms/*/tests/__pycache__/*
