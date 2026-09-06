@@ -123,7 +123,13 @@ func (a *App) fetchFlag(flagName string) (*Flag, error) {
 	if apiKey == "" {
 		log.Fatal("SERVICE_API_KEY deve ser definida")
 	}
-	req, err := http.NewRequest("GET", parsedURL.String(), nil)
+
+	sanitizedURL := &url.URL{
+		Scheme: parsedURL.Scheme,
+		Host:   parsedURL.Host,
+		Path:   parsedURL.Path,
+	}
+	req, err := http.NewRequest("GET", sanitizedURL.String(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("erro ao criar requisição para flag-service: %w", err)
 	}
@@ -165,7 +171,13 @@ func (a *App) fetchRule(flagName string) (*TargetingRule, error) {
 	}
 
 	apiKey := os.Getenv("SERVICE_API_KEY") // Usa a mesma chave
-	req, err := http.NewRequest("GET", parsedURL.String(), nil)
+
+	sanitizedURL := &url.URL{
+		Scheme: parsedURL.Scheme,
+		Host:   parsedURL.Host,
+		Path:   parsedURL.Path,
+	}
+	req, err := http.NewRequest("GET", sanitizedURL.String(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("erro ao criar requisição para targeting-service: %w", err)
 	}

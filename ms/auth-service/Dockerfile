@@ -1,11 +1,11 @@
 # STAGE BUILD
-FROM golang:1.21-alpine AS builder
+FROM golang:1.25-alpine AS builder
 
 WORKDIR /app
 
 COPY go.mod go.sum ./
 COPY *.go ./
-RUN go mod tidy && go mod download
+RUN go mod download && go mod tidy
 RUN CGO_ENABLED=0 GOOS=linux go build -o /auth-service .
 
 # STAGE RUN
