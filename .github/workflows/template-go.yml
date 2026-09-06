@@ -55,7 +55,11 @@ jobs:
 
       - name: 📦 Download modules
         working-directory: ${{ inputs.working-dir }}
-        run: go mod download
+        env:
+          GOPROXY: https://proxy.golang.org
+        run: |
+          go mod tidy
+          go mod download
 
       - name: 🔍 Lint (golangci-lint)
         working-directory: ${{ inputs.working-dir }}
