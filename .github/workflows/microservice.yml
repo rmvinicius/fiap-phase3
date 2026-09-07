@@ -186,5 +186,5 @@ jobs:
       environment: ${{ needs.changes.outputs.environment }}
       push-image: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       ecr-registry: ${{ needs.changes.outputs.ecr_registry }}
-      go-version: "1.21"
+      go-version: "1.25"
     secrets: inherit
