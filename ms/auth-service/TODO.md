@@ -31,3 +31,10 @@ handlers.go
 
 	//"crypto/sha256"
 	//"encoding/hex"
+
+
+
+# Melhorias no template
+
+unificar o template-go e template-python, criar condições para aplicar cada step conforme o tipo de serviço
+
