@@ -1,0 +1,51 @@
+namespace: application
+name: auth-service
+port: 8001
+replicas: 1
+image:
+  repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com/toggle-master
+  tag: "1.0"
+  pullPolicy: IfNotPresent
+configmap:
+  PORT: "8001"
+secrets:
+  DATABASE_URL: cG9zdGdyZXM6Ly9hdXRoX3NlcnZpY2U6YXV0aF9zZXJ2aWNlQDIwMjZAZGF0YWJhc2UtZGV2LTAxLmNueW4ycmQybG91dC51cy1lYXN0LTEucmRzLmFtYXpvbmF3cy5jb206NTQzMi9hdXRoX2Ri
+  MASTER_KEY: YWRtaW4ta2V5QDIwMjY=
+resources:
+  limits:
+    cpu: "200m"
+    memory: "512Mi"
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+probes:
+  path: /health
+  startupInitialDelaySeconds: 15
+  startupPeriodSeconds: 10
+  startupFailureThreshold: 9
+  livenessInitialDelaySeconds: 10
+  livenessPeriodSeconds: 20
+  livenessFailureThreshold: 3
+  readinessInitialDelaySeconds: 5
+  readinessPeriodSeconds: 10
+  readinessFailureThreshold: 3
+service:
+  type: ClusterIP
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  averageCpuUtilization: 10
+  averageMemoryUtilization: 10
+keda:
+  enabled: false
+  minReplicaCount: 0
+  maxReplicaCount: 5
+  cooldownPeriod: 30
+  pollingInterval: 10
+  queueLength: "5"
+  awsRegion: "us-east-1"
+  queueURL: "queue-toggle-master"
+  awsAccessKeyId: ""
+  awsSecretAccessKey: ""
+  awsSessionToken: ""
