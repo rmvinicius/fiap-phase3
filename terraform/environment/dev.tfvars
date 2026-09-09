@@ -106,5 +106,5 @@ ecr_repositories = [
   "targeting-service",
   "auth-service",
   "evaluation-service",
-  "helm",
+  "helm/microservice",
 ]
