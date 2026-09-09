@@ -42,6 +42,8 @@ jobs:
   python-ms:
     name: "🐍 ${{ inputs.service-name }}"
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v7
@@ -122,4 +124,16 @@ jobs:
           IMAGE_TAG: v1.0.0-${{ github.sha }}-${{ inputs.environment }}
         run: |
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: 📝 Update Image Tag in values.yaml
+        working-directory: ms/${{ inputs.service-name }}/deploy
+        env:
+          IMAGE_TAG: v1.0.0-${{ github.sha }}-${{ inputs.environment }}
+        run: |
+          yq -i '.image.tag = env(IMAGE_TAG)' values.yaml
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add values.yaml
+          git commit -m "chore: update image tag to ${IMAGE_TAG}"
+          git push
           
