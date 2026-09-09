@@ -97,13 +97,12 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          set -e
           helm version
           helm package .
           CHART_NAME=$(yq -r '.name' Chart.yaml)
           CHART_VERSION=$(yq -r '.version' Chart.yaml)
           echo "Chart - ${CHART_NAME} | Version - ${CHART_VERSION}"
           echo "Logging into Helm registry..."
-          aws ecr get-login-password --region us-east-1 | helm registry login --username AWS --password-stdin "${REGISTRY}"
+          aws ecr get-login-password --region ${{ env.AWS_REGION }}| helm registry login --username AWS --password-stdin "${REGISTRY}"
           echo "Push to helm registry"
           helm push "${CHART_NAME}-${CHART_VERSION}.tgz" "oci://${REGISTRY}/helm"
