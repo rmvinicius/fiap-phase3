@@ -12,7 +12,7 @@ resources:
 image:
   repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com/toggle-master
   name: flag-service
-  tag: "v1.0.0-f8b0ffa1443c6b31e997eb177413916d1b89c762-DEV"
+  tag: "v1.0.0-98f4c97fe833930a2deec4e721caac6141508e63-DEV"
   pullPolicy: IfNotPresent
 configmap:
   AUTH_SERVICE_URL: "http://auth-service-svc.application.svc.cluster.local:8001"
