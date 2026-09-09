@@ -1,9 +1,7 @@
 name: targeting-service
 namespace: application
-
 port: 8003
 replicas: 1
-
 resources:
   limits:
     cpu: "200m"
@@ -11,20 +9,16 @@ resources:
   requests:
     cpu: "100m"
     memory: "256Mi"
-
 image:
   repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com/toggle-master
   name: targeting-service
-  tag: "1.0"
+  tag: "v1.0.0-f8b0ffa1443c6b31e997eb177413916d1b89c762-DEV"
   pullPolicy: IfNotPresent
-
 configmap:
   AUTH_SERVICE_URL: "http://auth-service-svc.application.svc.cluster.local:8001"
   PORT: "8003"
-
 secrets:
   DATABASE_URL: cG9zdGdyZXM6Ly90YXJnZXRpbmdfc2VydmljZTp0YXJnZXRpbmdfc2VydmljZTIwMjZAZGF0YWJhc2UtZGV2LTAzLmNueW4ycmQybG91dC51cy1lYXN0LTEucmRzLmFtYXpvbmF3cy5jb206NTQzMi90YXJnZXRpbmdfZGI=
-
 probes:
   startup:
     path: /health
@@ -41,17 +35,14 @@ probes:
     initialDelaySeconds: 5
     periodSeconds: 10
     failureThreshold: 3
-
 service:
   type: ClusterIP
-
 hpa:
   enabled: false
   minReplicas: 1
   maxReplicas: 5
   averageCpuUtilization: 10
   averageMemoryUtilization: 10
-
 keda:
   enabled: false
   type: ""
