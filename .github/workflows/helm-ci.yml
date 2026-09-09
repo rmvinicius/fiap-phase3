@@ -26,7 +26,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.resolve.outputs.ENV }}
-      registry: ${{ steps.set-ecr.outputs.registry }}
     steps:
       - name: 📥 Checkout (full history)
         uses: actions/checkout@v7
@@ -45,12 +44,6 @@ jobs:
               main)     echo "ENV=PRD" >> "$GITHUB_OUTPUT" ;;
             esac
           fi
-
-      - name: 🔐 Set ECR registry
-        id: set-ecr
-        env:
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
-        run: echo "registry=${ECR_REGISTRY}" >> "$GITHUB_OUTPUT"
 
   lint:
     name: "🔍 Lint Helm Chart"
@@ -102,7 +95,7 @@ jobs:
       - name: 📦 Package and Push Helm Chart
         working-directory: helm/microservice
         env:
-          REGISTRY: ${{ needs.changes.outputs.registry }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_USERNAME: ${{ steps.login-ecr.outputs.username }}
           ECR_PASSWORD: ${{ steps.login-ecr.outputs.password }}
         run: |
