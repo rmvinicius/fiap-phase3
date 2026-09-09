@@ -1,9 +1,7 @@
 name: auth-service
 namespace: application
-
 port: 8001
 replicas: 1
-
 resources:
   limits:
     cpu: "200m"
@@ -11,21 +9,16 @@ resources:
   requests:
     cpu: "100m"
     memory: "256Mi"
-
-
 image:
   repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com/toggle-master
   name: auth-service
-  tag: "1.0"
+  tag: "v1.0.0-f8b0ffa1443c6b31e997eb177413916d1b89c762-DEV"
   pullPolicy: IfNotPresent
-
 configmap:
   PORT: "8001"
-
 secrets:
   DATABASE_URL: cG9zdGdyZXM6Ly9hdXRoX3NlcnZpY2U6YXV0aF9zZXJ2aWNlQDIwMjZAZGF0YWJhc2UtZGV2LTAxLmNueW4ycmQybG91dC51cy1lYXN0LTEucmRzLmFtYXpvbmF3cy5jb206NTQzMi9hdXRoX2Ri
   MASTER_KEY: YWRtaW4ta2V5QDIwMjY=
-
 probes:
   startup:
     path: /health
@@ -42,17 +35,14 @@ probes:
     initialDelaySeconds: 5
     periodSeconds: 10
     failureThreshold: 3
-
 service:
   type: ClusterIP
-
 hpa:
   enabled: false
   minReplicas: 1
   maxReplicas: 5
   averageCpuUtilization: 90
   averageMemoryUtilization: 90
-
 keda:
   enabled: false
   type: ""
