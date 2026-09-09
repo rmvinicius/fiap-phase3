@@ -110,5 +110,5 @@ jobs:
           CHART_VERSION=$(yq -r '.version' Chart.yaml)
           echo "Chart - ${CHART_NAME} | Version - ${CHART_VERSION}"
           #
-          helm registry login $REGISTRY -u AWS -p $(aws ecr get-login-password --region aws-region ${{ env.AWS_REGION }})
+          helm registry login $REGISTRY -u AWS -p $(aws ecr get-login-password --region ${{ env.AWS_REGION }})
           helm push $CHART_NAME-$CHART_VERSION.tgz oci://$REGISTRY/helm
