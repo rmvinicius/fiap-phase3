@@ -1,9 +1,7 @@
 name: evaluation-service
 namespace: application
-
 port: 8004
 replicas: 1
-
 resources:
   limits:
     cpu: "200m"
@@ -11,13 +9,11 @@ resources:
   requests:
     cpu: "100m"
     memory: "32Mi"
-
 image:
   repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com/toggle-master
   name: evaluation-service
-  tag: "1.0"
+  tag: "v1.0.0-98f4c97fe833930a2deec4e721caac6141508e63-DEV"
   pullPolicy: IfNotPresent
-
 configmap:
   PORT: "8004"
   FLAG_SERVICE_URL: "http://flag-service-svc.application.svc.cluster.local:8002"
@@ -25,14 +21,12 @@ configmap:
   AWS_SQS_URL: "https://sqs.us-east-1.amazonaws.com/076892642827/queue-toggle-master"
   AWS_SQS_ENDPOINT: "https://sqs.us-east-1.amazonaws.com"
   AWS_REGION: "us-east-1"
-
 secrets:
   SERVICE_API_KEY: dG1fa2V5XzhlMTU4MTE1MDRjZTI3NDU1NWEyODhlZGU3YjEzNjc5OTk5YWJjZjhmY2VkNjIwNGU0ZGMwMDVhYzU5MTA4ZDg=
   AWS_ACCESS_KEY_ID: QVNJQVJEWlpJVFlGNEc0WTNORlI=
   AWS_SECRET_ACCESS_KEY: Zk5XejFqcHJmYzErcUE3UkhHcHYvWXA0MDQ5Q3ppOE0xNG5nT0xoTQ==
   AWS_SESSION_TOKEN: SVFvSmIzSnBaMmx1WDJWakVONy8vLy8vLy8vLy93RWFDWFZ6TFhkbGMzUXRNaUpJTUVZQ0lRQ2swRWtrRklDYjJJb0J3c0ROSGZsaDhwSTJZRGQzK3Q5NEpLN01pclNBSFFJaEFPTTl1dXAwaVkyb0lWQ0dRSzdTdDV6WjlHK3ZxTTU5MG53ZEJRYksyVkRmS3NFQ0NLZi8vLy8vLy8vLy93RVFBQm9NTURjMk9Ea3lOalF5T0RJM0lnekhLWkN6VGhpb2tkVzRya3NxbFFJWEZha0tRcDZVd2VjdCtuMFpvV1d4TDNkSlJsdkhxR2h2VkwraVZ0ek1TQWFTTXJETUtvd0N5UXdqMHFHQ0ZqMUlrUUNYclJ2dnY5NkpKWTZvWUZYOUxJOFZvaS8vandpWG1TaUJCK1o1UVBMaTYrbkJhTWJtbW9PcmRYSTJGY1Z1dnNpaEpvNWxrc0hBRGR3MG1PQUQwSjZVNGE0S1RZWTdRS0E4ZHl4cmlJcU96NzMrUmpzWUVHWGV2MFlJalVCTEtQYUhPMS9HVjljZ3huQlJYQ3dteEFGdlk3dXdZbFkyZWR2aGFlTDRwOVYwaTdHSG1Yc1NOL0tmNVlxeTJ1MUg4ZXNTUkY4NVU5ekxIRkdnTCtIKzZJSVR0THlIRDZIeXI1RU1YcEFzOHZwSnFqZGVuS2kxV2MvV3AyRWpHSGZyRFdlTzZSY2Y1WXNuTUdoczlDR215d0JhUFpKS3JYYzZ2eXpUSTZndUx6ZStLck9STVBLN3dOSUdPcHdCWE5IcW55WTVra0d5NGFaMEhrY3o2NG1uTEc1SERwMkZ4cndxRTNNdmJZWWxTQm5VQ3licGRUUjZtSHl1U283R0hGMTdUZXZJVkNYZVlDWnJ5TVliQktuQURjekRFMjFqQ3dUaEpMUjdjZmw5a3hWdVNhV05Zc3d1N2pIdWxFRFYwZXZuWk5Ub0graHZsY0JOTHZpU1E3b2xPaEZldG54V1FzU3R0YU4yT1BsWm1qM01FT2lUMGlXc3hYM3M4UWJVY2FJenprQkFYQTd2NVR4bg==
   REDIS_URL: cmVkaXNzOi8vcmVkaXMtZGV2LTAxLWNobHBpZC5zZXJ2ZXJsZXNzLnVzZTEuY2FjaGUuYW1hem9uYXdzLmNvbTo2Mzc5
-
 probes:
   startup:
     path: /health
@@ -49,7 +43,6 @@ probes:
     initialDelaySeconds: 5
     periodSeconds: 10
     failureThreshold: 3
-
 service:
   type: ClusterIP
 hpa:
