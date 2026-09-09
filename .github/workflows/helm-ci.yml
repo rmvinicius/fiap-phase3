@@ -103,12 +103,14 @@ jobs:
         working-directory: helm/microservice
         env:
           REGISTRY: ${{ needs.changes.outputs.registry }}
+          ECR_USERNAME: ${{ steps.login-ecr.outputs.username }}
+          ECR_PASSWORD: ${{ steps.login-ecr.outputs.password }}
         run: |
+          set -e
           helm version
           helm package .
           CHART_NAME=$(yq -r '.name' Chart.yaml)
           CHART_VERSION=$(yq -r '.version' Chart.yaml)
           echo "Chart - ${CHART_NAME} | Version - ${CHART_VERSION}"
-          #
-          echo "${{ steps.login-ecr.outputs.password }}" | helm registry login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
-          helm push $CHART_NAME-$CHART_VERSION.tgz oci://$REGISTRY/helm
+          echo "${ECR_PASSWORD}" | helm registry login --username "${ECR_USERNAME}" --password-stdin "${REGISTRY}"
+          helm push "${CHART_NAME}-${CHART_VERSION}.tgz" "oci://${REGISTRY}/helm"
