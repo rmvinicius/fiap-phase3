@@ -1,11 +1,20 @@
+name: auth-service
 namespace: application
 
-name: auth-service
 port: 8001
 replicas: 1
 
+resources:
+  limits:
+    cpu: "200m"
+    memory: "512Mi"
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+
 image:
   repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com/toggle-master
+  name: auth-service
   tag: "1.0"
   pullPolicy: IfNotPresent
 
@@ -16,25 +25,22 @@ secrets:
   DATABASE_URL: "postgres://auth_service:auth_service%40126@..."
   MASTER_KEY: "admin-key-2026"
 
-resources:
-  limits:
-    cpu: "200m"
-    memory: "512Mi"
-  requests:
-    cpu: "100m"
-    memory: "256Mi"
-
 probes:
-  path: /health
-  startupInitialDelaySeconds: 15
-  startupPeriodSeconds: 10
-  startupFailureThreshold: 9
-  livenessInitialDelaySeconds: 10
-  livenessPeriodSeconds: 20
-  livenessFailureThreshold: 3
-  readinessInitialDelaySeconds: 5
-  readinessPeriodSeconds: 10
-  readinessFailureThreshold: 3
+  startup:
+    path: /health
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    failureThreshold: 9
+  liveness:
+    path: /health
+    initialDelaySeconds: 10
+    periodSeconds: 20
+    failureThreshold: 3
+  readiness:
+    path: /health
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
 
 service:
   type: ClusterIP
@@ -48,6 +54,7 @@ hpa:
 
 keda:
   enabled: true
+  type: aws-sqs-queue
   minReplicaCount: 0
   maxReplicaCount: 5
   cooldownPeriod: 30

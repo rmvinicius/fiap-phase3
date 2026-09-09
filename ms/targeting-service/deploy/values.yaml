@@ -1,16 +1,9 @@
-namespace: application
 name: targeting-service
+namespace: application
+
 port: 8003
 replicas: 1
-image:
-  repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com/toggle-master
-  tag: "1.0"
-  pullPolicy: IfNotPresent
-configmap:
-  AUTH_SERVICE_URL: "http://auth-service-svc.application.svc.cluster.local:8001"
-  PORT: "8003"
-secrets:
-  DATABASE_URL: cG9zdGdyZXM6Ly90YXJnZXRpbmdfc2VydmljZTp0YXJnZXRpbmdfc2VydmljZTIwMjZAZGF0YWJhc2UtZGV2LTAzLmNueW4ycmQybG91dC51cy1lYXN0LTEucmRzLmFtYXpvbmF3cy5jb206NTQzMi90YXJnZXRpbmdfZGI=
+
 resources:
   limits:
     cpu: "200m"
@@ -18,34 +11,57 @@ resources:
   requests:
     cpu: "100m"
     memory: "256Mi"
+
+image:
+  repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com/toggle-master
+  name: targeting-service
+  tag: "1.0"
+  pullPolicy: IfNotPresent
+
+configmap:
+  AUTH_SERVICE_URL: "http://auth-service-svc.application.svc.cluster.local:8001"
+  PORT: "8003"
+
+secrets:
+  DATABASE_URL: cG9zdGdyZXM6Ly90YXJnZXRpbmdfc2VydmljZTp0YXJnZXRpbmdfc2VydmljZTIwMjZAZGF0YWJhc2UtZGV2LTAzLmNueW4ycmQybG91dC51cy1lYXN0LTEucmRzLmFtYXpvbmF3cy5jb206NTQzMi90YXJnZXRpbmdfZGI=
+
 probes:
-  path: /health
-  startupInitialDelaySeconds: 15
-  startupPeriodSeconds: 10
-  startupFailureThreshold: 9
-  livenessInitialDelaySeconds: 10
-  livenessPeriodSeconds: 20
-  livenessFailureThreshold: 3
-  readinessInitialDelaySeconds: 5
-  readinessPeriodSeconds: 10
-  readinessFailureThreshold: 3
+  startup:
+    path: /health
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    failureThreshold: 9
+  liveness:
+    path: /health
+    initialDelaySeconds: 10
+    periodSeconds: 20
+    failureThreshold: 3
+  readiness:
+    path: /health
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
+
 service:
   type: ClusterIP
+
 hpa:
   enabled: false
   minReplicas: 1
   maxReplicas: 5
   averageCpuUtilization: 10
   averageMemoryUtilization: 10
+
 keda:
   enabled: false
+  type: ""
   minReplicaCount: 0
   maxReplicaCount: 5
   cooldownPeriod: 30
   pollingInterval: 10
-  queueLength: "5"
+  queueLength: ""
   awsRegion: "us-east-1"
-  queueURL: "queue-toggle-master"
+  queueURL: ""
   awsAccessKeyId: ""
   awsSecretAccessKey: ""
   awsSessionToken: ""

@@ -41,7 +41,7 @@ spec:
   cooldownPeriod: {{ .Values.keda.cooldownPeriod }}
   pollingInterval: {{ .Values.keda.pollingInterval }}
   triggers:
-  - type: aws-sqs-queue
+  - type: {{ .Values.keda.type }}
     authenticationRef:
       name: {{ .Values.name }}-keda-trigger-auth-aws-credentials
     metadata:
