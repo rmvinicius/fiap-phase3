@@ -1,9 +1,7 @@
 name: flag-service
 namespace: application
-
 port: 8002
 replicas: 1
-
 resources:
   limits:
     cpu: "200m"
@@ -11,20 +9,16 @@ resources:
   requests:
     cpu: "100m"
     memory: "256Mi"
-
 image:
   repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com/toggle-master
   name: flag-service
-  tag: "1.0"
+  tag: "v1.0.0-e1051ec27ac13c61ffbae0ba88b3c88f021f8a0b-DEV"
   pullPolicy: IfNotPresent
-
 configmap:
   AUTH_SERVICE_URL: "http://auth-service-svc.application.svc.cluster.local:8001"
   PORT: "8002"
-
 secrets:
   DATABASE_URL: cG9zdGdyZXM6Ly9mbGFnX3NlcnZpY2U6ZmxhZ19zZXJ2aWNlMjAyNkBkYXRhYmFzZS1kZXYtMDIuY255bjJyZDJsb3V0LnVzLWVhc3QtMS5yZHMuYW1hem9uYXdzLmNvbTo1NDMyL2ZsYWdzX2Ri
-
 probes:
   startup:
     path: /health
@@ -41,10 +35,8 @@ probes:
     initialDelaySeconds: 5
     periodSeconds: 10
     failureThreshold: 3
-
 service:
   type: ClusterIP
-
 hpa:
   enabled: false
   minReplicas: 1
