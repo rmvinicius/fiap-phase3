@@ -1,0 +1,75 @@
+# Argo CD Helm Chart Values
+# https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
+
+# Server configuration
+server:
+  enabled: true
+  replicas: 1
+  service:
+    type: LoadBalancer
+    annotations: {}
+    servicePort: 80
+  ingress:
+    enabled: false
+  config:
+    url: https://argocd.example.com
+    applications: |
+      projects: |
+        - name: default
+          description: default project
+          destServer: https://kubernetes.default.svc
+          destNamespace: *
+          srcRepos:
+            - '*'
+    exec:
+      enabled: true
+    params:
+      server.mode: http
+  extraArgs:
+    - --insecure
+  resources: {}
+
+# Repo server
+repoServer:
+  enabled: true
+  replicas: 1
+  service:
+    type: ClusterIP
+  ingress:
+    enabled: false
+  resources: {}
+
+# Application controller
+applicationController:
+  enabled: true
+  replicas: 1
+  resources: {}
+
+# Notifications
+notifications:
+  enabled: true
+
+# Redis
+redis:
+  enabled: true
+  redisRedis:
+    resources: {}
+
+# Configmaps
+configs:
+  params:
+    server.mode: http
+  cm:
+    timeout.reconciliation: 5
+    timeout.reconciliation.jitter: 0
+  rbac:
+    policy.csv: |
+      role.default = ''
+      role.admin = *, *, */*
+
+# Global
+global:
+  image:
+    repository: quay.io/argoproj/argocd
+    tag: v2.11.5
+  imagePullPolicy: IfNotPresent
