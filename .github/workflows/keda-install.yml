@@ -49,7 +49,7 @@ jobs:
     runs-on: [self-hosted, eks, private]
     env:
       AWS_REGION: "us-east-1"
-      NAMESPACE: "ingress"
+      NAMESPACE: "keda"
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v7
@@ -83,4 +83,4 @@ jobs:
       - name: 📦 Install Keda
         working-directory: eks/ingress
         run: |
-          helm upgrade --install keda --version 2.20.1 kedacore/keda --namespace keda --create-namespace
+          helm upgrade --install keda --version 2.20.1 kedacore/keda --namespace ${{ env.NAMESPACE }} --create-namespace

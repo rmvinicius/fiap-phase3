@@ -6,13 +6,13 @@ server:
   enabled: true
   replicas: 1
   service:
-    type: LoadBalancer
+    type: ClusterIP
     annotations: {}
     servicePort: 80
   ingress:
     enabled: false
   config:
-    url: https://argocd.example.com
+    url: http://aa93e18669da649319525d22a07486b2-870857806.us-east-1.elb.amazonaws.com
     applications: |
       projects: |
         - name: default
