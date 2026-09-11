@@ -48,7 +48,7 @@ jobs:
   install-argocd:
     name: "Install Argo CD"
     needs: [changes]
-    runs-on: self-hosted
+    runs-on: [self-hosted, eks, private]
     env:
       AWS_REGION: "us-east-1"
       ARGONCD_NAMESPACE: "argocd"
