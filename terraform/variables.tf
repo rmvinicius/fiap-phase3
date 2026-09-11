@@ -177,6 +177,10 @@ variable "eks_node_groups" {
   }))
 }
 
+variable "eks_role_arn" {
+  type = string
+}
+
 ### DYNAMODB
 variable "dynamodb_table_name" {
   type = string
@@ -211,11 +215,7 @@ variable "dynamodb_attributes" {
 }
 
 ### REDIS
-variable "redis_cache_name" {
-  type = string
-}
-
-variable "redis_description" {
+variable "redis_cluster_id" {
   type = string
 }
 
@@ -223,7 +223,23 @@ variable "redis_engine" {
   type = string
 }
 
-variable "redis_version" {
+variable "redis_node_type" {
+  type = string
+}
+
+variable "redis_num_cache_nodes" {
+  type = number
+}
+
+variable "redis_parameter_group_name" {
+  type = string
+}
+
+variable "redis_port" {
+  type = number
+}
+
+variable "redis_subnet_group_name" {
   type = string
 }
 

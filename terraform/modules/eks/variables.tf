@@ -23,3 +23,7 @@ variable "eks_node_groups" {
     max_size      = number
   }))
 }
+
+variable "eks_role_arn" {
+  type = string
+}

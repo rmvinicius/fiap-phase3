@@ -20,14 +20,13 @@ resource "aws_ecr_lifecycle_policy" "repositories" {
   repository = each.value.name
 
   policy = jsonencode({
-    version = "2.0"
     rules = [
       {
         rulePriority = 1
         description  = "Expire untagged images after 7 days"
         selection = {
           tagStatus   = "untagged"
-          countType   = "time"
+          countType   = "sinceImagePushed"
           countUnit   = "days"
           countNumber = 7
         }

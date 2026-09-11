@@ -58,7 +58,7 @@ module "rds" {
   rds_parameter_group_name   = var.rds_parameter_group_name
   rds_skip_final_snapshot    = var.rds_skip_final_snapshot
   rds_subnet_name            = var.rds_subnet_name
-  rds_subnet_ids             = module.network.rds_subnet_ids
+  rds_subnet_ids             = [module.network.rds_subnet_ids]
   rds_vpc_security_group_ids = [module.network.sg_private_id]
 }
 
@@ -70,6 +70,7 @@ module "eks" {
   eks_cluster_version = var.eks_cluster_version
   eks_subnet_ids      = module.network.eks_subnet_ids
   eks_node_groups     = var.eks_node_groups
+  eks_role_arn        = var.eks_role_arn
 }
 
 ### MODULE DYNAMODB
@@ -87,14 +88,17 @@ module "dynamodb" {
 
 ### MODULE REDIS
 module "redis" {
-  source                   = "./modules/redis"
-  environment              = var.environment
-  redis_cache_name         = var.redis_cache_name
-  redis_description        = var.redis_description
-  redis_security_group_ids = [module.network.sg_private_id]
-  redis_subnet_ids         = module.network.redis_subnet_ids
-  redis_engine             = var.redis_engine
-  redis_version            = var.redis_version
+  source                     = "./modules/redis"
+  environment                = var.environment
+  redis_cluster_id           = var.redis_cluster_id
+  redis_engine               = var.redis_engine
+  redis_node_type            = var.redis_node_type
+  redis_num_cache_nodes      = var.redis_num_cache_nodes
+  redis_parameter_group_name = var.redis_parameter_group_name
+  redis_port                 = var.redis_port
+  redis_subnet_group_name    = var.redis_subnet_group_name
+  redis_security_group_ids   = [module.network.sg_private_id]
+  redis_subnet_ids           = [module.network.redis_subnet_ids]
 }
 
 ### MODULE ECR

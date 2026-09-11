@@ -78,6 +78,7 @@ eks_node_groups = [
     max_size      = 4
   }
 ]
+eks_role_arn = "arn:aws:iam::598450975126:role/LabRole"
 
 ### DYNAMODB
 dynamodb_table_name     = "ToggleMasterAnalytics"
@@ -94,10 +95,13 @@ dynamodb_attributes = [
 ]
 
 ### REDIS
-redis_cache_name  = "redis-dev-01"
-redis_description = "Redis development cache"
-redis_engine      = "redis" # or "valkey"
-redis_version     = "7.2"
+redis_cluster_id           = "redis-dev-01"
+redis_engine               = "redis"
+redis_node_type            = "cache.t4g.micro"
+redis_num_cache_nodes      = 1
+redis_parameter_group_name = "default.redis7"
+redis_port                 = 6379
+redis_subnet_group_name    = "redis_subnet_group_dev"
 
 ### ECR
 ecr_repositories = [
