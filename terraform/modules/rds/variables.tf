@@ -12,33 +12,37 @@ variable "rds_database_instances" {
 }
 
 variable "rds_allocated_storage" {
-  type    = number
+  type = number
 }
 
 variable "rds_instance_class" {
-  type    = string
+  type = string
 }
 
 variable "rds_engine" {
-  type    = string
+  type = string
 }
 
 variable "rds_engine_version" {
-  type    = string
+  type = string
 }
 
 variable "rds_parameter_group_name" {
-  type    = string
+  type = string
 }
 
 variable "rds_skip_final_snapshot" {
-  type    = bool
+  type = bool
 }
 
 variable "rds_subnet_name" {
-  type    = string
+  type = string
 }
 
 variable "rds_subnet_ids" {
+  type = list(string)
+}
+
+variable "rds_security_group_ids" {
   type = list(string)
 }

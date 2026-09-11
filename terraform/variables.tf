@@ -139,6 +139,11 @@ variable "rds_subnet_name" {
   type    = string
 }
 
+variable "rds_security_group_ids" {
+  type        = list(string)
+  description = "Security group IDs for RDS instances"
+}
+
 ### EKS
 variable "eks_cluster_name" {
   type    = string

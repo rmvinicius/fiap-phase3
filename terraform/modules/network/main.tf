@@ -4,7 +4,7 @@ resource "aws_vpc" "vpc" {
   instance_tenancy = var.vpc_instance_tenancy
 
   tags = {
-    Name = var.vpc_name
+    Name        = var.vpc_name
     Environment = var.environment
   }
 }
@@ -17,7 +17,7 @@ resource "aws_subnet" "subnets" {
   availability_zone = each.value.az
 
   tags = {
-    Name = each.key
+    Name        = each.key
     Environment = var.environment
   }
 }
@@ -34,6 +34,7 @@ resource "aws_internet_gateway" "igw" {
 
 ### ELASTIC IP FOR NAT GATEWAY
 resource "aws_eip" "nat_eip" {
+  #checkov:skip=CKV2_AWS_19: "EIP is attached to NAT Gateway, not EC2 - Checkov does not recognize NAT Gateway as valid attachment"
   count  = var.eip_enable_nat_gateway ? 1 : 0
   domain = "vpc"
 
@@ -110,6 +111,8 @@ resource "aws_route_table_association" "private" {
 
 ### SECURITY GROUP
 resource "aws_security_group" "sg_private" {
+  #checkov:skip=CKV_AWS_382: "Unrestricted egress is required for private resources to reach the internet via NAT Gateway"
+  #checkov:skip=CKV2_AWS_5: "Security group is attached to RDS and Redis resources via module outputs"
   name        = var.security_group_priv_name
   description = var.security_group_priv_description
   vpc_id      = aws_vpc.vpc.id
@@ -138,6 +141,8 @@ resource "aws_security_group" "sg_private" {
 }
 
 resource "aws_security_group" "sg_public" {
+  #checkov:skip=CKV_AWS_382: "Unrestricted egress is required for public resources to reach the internet"
+  #checkov:skip=CKV2_AWS_5: "Security group is created for public-facing resources (e.g. Load Balancers) and is available for assignment"
   name        = var.security_group_pub_name
   description = var.security_group_pub_description
   vpc_id      = aws_vpc.vpc.id
@@ -161,6 +166,16 @@ resource "aws_security_group" "sg_public" {
 
   tags = {
     Name        = var.security_group_pub_name
+    Environment = var.environment
+  }
+}
+
+### DEFAULT SECURITY GROUP - restrict all traffic
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name        = "default-sg-restricted"
     Environment = var.environment
   }
 }
