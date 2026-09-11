@@ -161,7 +161,7 @@ terraform/
 | Variável | Tipo | Descrição |
 |---|---|---|
 | `environment` | `string` | Nome do ambiente, adicionado como tag. |
-| `rds_database_instances` | `list(object)` | Lista de definições de instâncias RDS. Cada objeto tem `name`, `db_name`, `username` e `password`. |
+| `rds_database_instances` | `list(object)` | Lista de definições de instâncias RDS. Cada objeto tem `name`, `db_name`, `username` e `password` (deixado em branco no `.tfvars`; preenchido dinamicamente via `locals` no módulo raiz). |
 | `rds_allocated_storage` | `number` | Storage alocado inicial em GB. |
 | `rds_instance_class` | `string` | Classe da instância (ex: `db.t3.micro`). |
 | `rds_engine` | `string` | Engine do banco (ex: `postgres`). |
@@ -323,7 +323,7 @@ Todas as variáveis são declaradas no `variables.tf` raiz. O arquivo `environme
 
 | Variável | Tipo | Arquivo de Origem | Descrição |
 |---|---|---|---|
-| `rds_database_instances` | `list(object)` | `dev.tfvars` | Lista de 3 instâncias RDS (auth_db, flags_db, targeting_db). |
+| `rds_database_instances` | `list(object)` | `dev.tfvars` | Lista de 3 instâncias RDS (auth_db, flags_db, targeting_db). Password deixado em branco — preenchido via `locals` no módulo raiz. |
 | `rds_allocated_storage` | `number` | `dev.tfvars` | Storage em GB (20). |
 | `rds_instance_class` | `string` | `dev.tfvars` | Classe da instância (`db.t3.micro`). |
 | `rds_engine` | `string` | `dev.tfvars` | Engine (`postgres`). |
@@ -331,6 +331,9 @@ Todas as variáveis são declaradas no `variables.tf` raiz. O arquivo `environme
 | `rds_parameter_group_name` | `string` | `dev.tfvars` | Parameter group (`default.postgres17`). |
 | `rds_skip_final_snapshot` | `bool` | `dev.tfvars` | Pula o snapshot final no destroy (`true`). |
 | `rds_subnet_name` | `string` | `dev.tfvars` | Nome do DB subnet group. |
+| `rds_password_auth_db` | `string` | **env/`TF_VAR`** | **Sensitive.** Password para `auth_db`. |
+| `rds_password_flags_db` | `string` | **env/`TF_VAR`** | **Sensitive.** Password para `flags_db`. |
+| `rds_password_targeting_db` | `string` | **env/`TF_VAR`** | **Sensitive.** Password para `targeting_db`. |
 
 ### Variáveis de EKS
 
@@ -434,13 +437,21 @@ terraform validate
 
 ### Passo 6: Revisar o Plano de Execução
 
+As senhas do RDS (uma por banco) são definidas via variáveis de ambiente `TF_VAR_` (não armazenadas no `.tfvars`):
+
 ```bash
+export TF_VAR_rds_password_auth_db="Senha123"
+export TF_VAR_rds_password_flags_db="Senha456"
+export TF_VAR_rds_password_targeting_db="Senha789"
 terraform plan -var-file="environment/dev.tfvars"
 ```
 
 ### Passo 7: Aplicar a Infraestrutura
 
 ```bash
+export TF_VAR_rds_password_auth_db="Senha123"
+export TF_VAR_rds_password_flags_db="Senha456"
+export TF_VAR_rds_password_targeting_db="Senha789"
 terraform apply -var-file="environment/dev.tfvars"
 ```
 
@@ -449,6 +460,9 @@ Confirme com `yes` quando solicitado.
 ### Passo 8: Destruir a Infraestrutura (quando não for mais necessária)
 
 ```bash
+export TF_VAR_rds_password_auth_db="Senha123"
+export TF_VAR_rds_password_flags_db="Senha456"
+export TF_VAR_rds_password_targeting_db="Senha789"
 terraform plan -destroy -var-file="environment/dev.tfvars"
 terraform destroy -var-file="environment/dev.tfvars"
 ```
@@ -477,3 +491,22 @@ O state do Terraform é armazenado no S3 com a seguinte configuração (`bootstr
 | `region` | `us-east-1` |
 | `encrypt` | `true` (criptografia AES256 server-side) |
 | `use_lockfile` | `true` (state locking via S3, sem necessidade de DynamoDB) |
+
+---
+
+## GitHub Actions — Secrets Necessários
+
+Os workflows em `.github/workflows/terraform-ci.yml` e `.github/workflows/terraform-destroy.yml` consumem os seguintes secrets do GitHub:
+
+| Secret | Descrição |
+|---|---|
+| `AWS_ACCESS_KEY_ID_DEV` | AWS access key ID para o ambiente DEV. |
+| `AWS_SECRET_ACCESS_KEY_DEV` | AWS secret access key para o ambiente DEV. |
+| `AWS_SESSION_TOKEN_DEV` | AWS session token (se usando credenciais temporárias, ex: AWS Lab). |
+| `RDS_PASSWORD_AUTH_DB_DEV` | Master password para o banco `auth_db`. Definido como `TF_VAR_rds_password_auth_db` durante `plan` e `apply`. |
+| `RDS_PASSWORD_FLAGS_DB_DEV` | Master password para o banco `flags_db`. Definido como `TF_VAR_rds_password_flags_db` durante `plan` e `apply`. |
+| `RDS_PASSWORD_TARGETING_DB_DEV` | Master password para o banco `targeting_db`. Definido como `TF_VAR_rds_password_targeting_db` durante `plan` e `apply`. |
+
+Use apenas caracteres ASCII impríveis (exceto `/`, `@`, `"`, ` `).
+
+Para ambientes STG e PRD, crie os equivalents (`AWS_ACCESS_KEY_ID_STG`, `RDS_PASSWORD_AUTH_DB_STG`, etc.).

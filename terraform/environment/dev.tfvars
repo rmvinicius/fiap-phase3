@@ -43,19 +43,19 @@ rds_database_instances = [
     name     = "rds-dev-01"
     db_name  = "auth_db"
     username = "postgres"
-    password = "postgres@2026"
+    password = ""
   },
   {
     name     = "rds-dev-02"
     db_name  = "flags_db"
     username = "postgres"
-    password = "postgres@2026"
+    password = ""
   },
   {
     name     = "rds-dev-03"
     db_name  = "targeting_db"
     username = "postgres"
-    password = "postgres@2026"
+    password = ""
   }
 ]
 rds_allocated_storage    = 20

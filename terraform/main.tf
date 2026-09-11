@@ -32,10 +32,25 @@ module "sqs" {
 }
 
 ### MODULE RDS
+locals {
+  rds_db_passwords = {
+    "auth_db"      = var.rds_password_auth_db
+    "flags_db"     = var.rds_password_flags_db
+    "targeting_db" = var.rds_password_targeting_db
+  }
+
+  rds_instances = [for db in var.rds_database_instances : {
+    name     = db.name
+    db_name  = db.db_name
+    username = db.username
+    password = db.password != "" ? db.password : lookup(local.rds_db_passwords, db.db_name, "")
+  }]
+}
+
 module "rds" {
   source                     = "./modules/rds"
   environment                = var.environment
-  rds_database_instances     = var.rds_database_instances
+  rds_database_instances     = local.rds_instances
   rds_allocated_storage      = var.rds_allocated_storage
   rds_instance_class         = var.rds_instance_class
   rds_engine                 = var.rds_engine

@@ -109,6 +109,25 @@ variable "rds_database_instances" {
     username = string
     password = string
   }))
+  description = "List of RDS instance definitions. The password field can be left empty and will be filled from the per-database password variables."
+}
+
+variable "rds_password_auth_db" {
+  type      = string
+  sensitive = true
+  description = "Master password for the auth_db RDS instance (set via TF_VAR_rds_password_auth_db)."
+}
+
+variable "rds_password_flags_db" {
+  type      = string
+  sensitive = true
+  description = "Master password for the flags_db RDS instance (set via TF_VAR_rds_password_flags_db)."
+}
+
+variable "rds_password_targeting_db" {
+  type      = string
+  sensitive = true
+  description = "Master password for the targeting_db RDS instance (set via TF_VAR_rds_password_targeting_db)."
 }
 
 variable "rds_allocated_storage" {

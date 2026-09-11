@@ -20,6 +20,7 @@ resource "aws_ecr_lifecycle_policy" "repositories" {
   repository = each.value.name
 
   policy = jsonencode({
+    version = "2.0"
     rules = [
       {
         rulePriority = 1
