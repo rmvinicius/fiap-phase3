@@ -85,5 +85,5 @@ jobs:
       - name: 📦 Install Argo CD
         working-directory: eks/argo-cd
         run: |
-          helm upgrade --install argocd --version 10.8.3 argo/argo-cd --namespace ${{ env.NAMESPACE }} --values values.yaml
+          helm upgrade --install argocd --version 10.8.3 argo/argo-cd --namespace ${{ env.NAMESPACE }} --create-namespace --values values.yaml
           kubectl apply -f argocd-ingress.yaml
