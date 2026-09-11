@@ -254,6 +254,10 @@ variable "eks_role_arn" {
   type = string
 }
 
+variable "eks_capacity_type" {
+  type = string
+}
+
 ### DYNAMODB
 variable "dynamodb_table_name" {
   type = string

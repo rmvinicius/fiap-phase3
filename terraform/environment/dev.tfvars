@@ -133,13 +133,14 @@ eks_cluster_version = "1.36"
 eks_node_groups = [
   {
     name          = "eks-nodepool-dev-01"
-    instance_type = "t3.medium"
+    instance_type = "t3.small"
     desired_size  = 1
     min_size      = 1
     max_size      = 4
   }
 ]
-eks_role_arn = "arn:aws:iam::598450975126:role/LabRole"
+eks_role_arn      = "arn:aws:iam::598450975126:role/LabRole"
+eks_capacity_type = "SPOT"
 
 ### DYNAMODB
 dynamodb_table_name     = "ToggleMasterAnalytics"

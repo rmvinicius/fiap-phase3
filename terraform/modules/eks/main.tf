@@ -9,7 +9,7 @@ resource "aws_eks_cluster" "main" {
 
   vpc_config {
     subnet_ids              = var.eks_subnet_ids
-    endpoint_public_access  = false
+    endpoint_public_access  = true
     endpoint_private_access = true
     security_group_ids      = var.eks_security_group_ids
   }
@@ -40,6 +40,7 @@ resource "aws_eks_node_group" "nodes" {
   }
 
   instance_types = [each.value.instance_type]
+  capacity_type  = var.eks_capacity_type
 
   tags = {
     Name        = each.value.name

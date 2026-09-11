@@ -93,6 +93,7 @@ module "eks" {
   eks_node_groups        = var.eks_node_groups
   eks_role_arn           = var.eks_role_arn
   eks_security_group_ids = [module.network.sg_private_id]
+  eks_capacity_type      = var.eks_capacity_type
 }
 
 ### MODULE DYNAMODB
