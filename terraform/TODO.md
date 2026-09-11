@@ -23,9 +23,9 @@ export AWS_ACCESS_KEY_ID=""
 export AWS_SECRET_ACCESS_KEY=""
 export AWS_SESSION_TOKEN=""
 
-export TF_VAR_rds_password_auth_db="Senha123"
-export TF_VAR_rds_password_flags_db="Senha456"
-export TF_VAR_rds_password_targeting_db="Senha789"
+export TF_VAR_rds_password_auth_db="postgres2026"
+export TF_VAR_rds_password_flags_db="postgres2026"
+export TF_VAR_rds_password_targeting_db="postgres2026"
 
 # Run the container to execute terraform
 docker run -it -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" -e AWS_SESSION_TOKEN="$AWS_SESSION_TOKEN" -v ./:/workspace terraform-local:1.0 /bin/bash

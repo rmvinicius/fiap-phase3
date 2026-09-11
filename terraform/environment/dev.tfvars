@@ -101,7 +101,7 @@ redis_node_type            = "cache.t4g.micro"
 redis_num_cache_nodes      = 1
 redis_parameter_group_name = "default.redis7"
 redis_port                 = 6379
-redis_subnet_group_name    = "redis_subnet_group_dev"
+redis_subnet_group_name    = "redis-subnet-group-dev"
 
 ### ECR
 ecr_repositories = [
