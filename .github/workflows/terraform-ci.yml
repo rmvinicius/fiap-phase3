@@ -113,11 +113,45 @@ jobs:
           retention-days: 7
           if-no-files-found: error
 
-      - name: ⚙️ Apply
-        if: github.event_name == 'workflow_dispatch'
+  terraform-apply:
+    name: "⚙️ Terraform Apply · ${{ github.ref_name }}"
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    needs: terraform-plan
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: "us-east-1"
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v7
+
+      - name: 🔍 Resolve environment
+        id: resolve
+        run: |
+          ENV_VAL="${{ inputs.environment }}"
+          echo "ENV=${ENV_VAL}" >> "$GITHUB_OUTPUT"
+          echo "ENV_LOWER=$(echo "${ENV_VAL}" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
+      - name: 🔧 Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: 🔧 Configure AWS
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id: ${{ secrets[format('AWS_ACCESS_KEY_ID_{0}', steps.resolve.outputs.ENV)] }}
+          aws-secret-access-key: ${{ secrets[format('AWS_SECRET_ACCESS_KEY_{0}', steps.resolve.outputs.ENV)] }}
+          aws-session-token: ${{ secrets[format('AWS_SESSION_TOKEN_{0}', steps.resolve.outputs.ENV)] }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: 🔧 Init
         working-directory: terraform
-        env:
-          TF_VAR_rds_password_auth_db: ${{ secrets[format('RDS_PASSWORD_AUTH_DB_{0}', steps.resolve.outputs.ENV)] }}
-          TF_VAR_rds_password_flags_db: ${{ secrets[format('RDS_PASSWORD_FLAGS_DB_{0}', steps.resolve.outputs.ENV)] }}
-          TF_VAR_rds_password_targeting_db: ${{ secrets[format('RDS_PASSWORD_TARGETING_DB_{0}', steps.resolve.outputs.ENV)] }}
-        run: terraform apply -auto-approve -var-file="environment/${{ steps.resolve.outputs.ENV_LOWER }}.tfvars"
+        run: terraform init -backend-config="bootstrap/remote/${{ steps.resolve.outputs.ENV_LOWER }}-backend.tfvars"
+
+      - name: 📥 Download tfplan artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tfplan-${{ steps.resolve.outputs.ENV }}
+          path: terraform
+
+      - name: ⚙️ Apply
+        working-directory: terraform
+        run: terraform apply -auto-approve tfplan

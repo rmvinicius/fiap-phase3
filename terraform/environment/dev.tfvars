@@ -76,6 +76,18 @@ sg_pub_ingress_rules = [
   }
 ]
 
+### EC2
+ec2_instance_name               = "ec2-dev-01"
+ec2_ami_id                      = "ami-025d99823a4caad37"
+ec2_instance_type               = "t3.micro"
+ec2_associate_public_ip_address = false
+ec2_key_name                    = "ec2-dev-iac-key"
+ec2_monitoring                  = false
+ec2_root_volume_size            = 8
+ec2_root_volume_type            = "gp3"
+ec2_encrypted                   = true
+ec2_delete_on_termination       = true
+
 ### SQS
 sqs_name                       = "queue-toggle-master"
 sqs_delay_seconds              = 90

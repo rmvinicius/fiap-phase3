@@ -20,6 +20,24 @@ module "network" {
   sg_pub_ingress_rules            = var.sg_pub_ingress_rules
 }
 
+### MODULE EC2
+module "ec2" {
+  source                          = "./modules/ec2"
+  environment                     = var.environment
+  ec2_instance_name               = var.ec2_instance_name
+  ec2_ami_id                      = var.ec2_ami_id
+  ec2_instance_type               = var.ec2_instance_type
+  ec2_subnet_id                   = module.network.public_subnet_ids[0]
+  ec2_associate_public_ip_address = var.ec2_associate_public_ip_address
+  ec2_security_group_ids          = [module.network.sg_public_id]
+  ec2_key_name                    = var.ec2_key_name
+  ec2_monitoring                  = var.ec2_monitoring
+  ec2_root_volume_size            = var.ec2_root_volume_size
+  ec2_root_volume_type            = var.ec2_root_volume_type
+  ec2_encrypted                   = var.ec2_encrypted
+  ec2_delete_on_termination       = var.ec2_delete_on_termination
+}
+
 ### MODULE SQS
 module "sqs" {
   source                         = "./modules/sqs"

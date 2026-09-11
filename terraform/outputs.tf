@@ -39,6 +39,11 @@ output "sg_public_id" {
   value = module.network.sg_public_id
 }
 
+### EC2
+output "ec2_instance_id" {
+  value = module.ec2.instance_id
+}
+
 ### SQS Output
 output "sqs_id" {
   value = module.sqs.sqs_id
