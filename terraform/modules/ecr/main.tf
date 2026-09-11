@@ -1,19 +1,3 @@
-resource "aws_kms_key" "ecr" {
-  description             = "KMS key for ECR repositories"
-  deletion_window_in_days = 7
-  enable_key_rotation     = true
-
-  tags = {
-    Name        = "ecr-kms-key"
-    Environment = var.environment
-  }
-}
-
-resource "aws_kms_alias" "ecr" {
-  name          = "alias/ecr-repository"
-  target_key_id = aws_kms_key.ecr.key_id
-}
-
 resource "aws_ecr_repository" "repositories" {
   for_each = toset(var.ecr_repositories)
 
@@ -22,11 +6,6 @@ resource "aws_ecr_repository" "repositories" {
 
   image_scanning_configuration {
     scan_on_push = true
-  }
-
-  encryption_configuration {
-    encryption_type = "KMS"
-    kms_key         = aws_kms_key.ecr.arn
   }
 
   tags = {

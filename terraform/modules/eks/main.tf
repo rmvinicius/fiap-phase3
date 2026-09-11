@@ -1,21 +1,3 @@
-data "aws_caller_identity" "current" {}
-
-resource "aws_kms_key" "eks" {
-  description             = "KMS key for EKS cluster secrets encryption"
-  deletion_window_in_days = 7
-  enable_key_rotation     = true
-
-  tags = {
-    Name        = "${var.eks_cluster_name}-eks-kms-key"
-    Environment = var.environment
-  }
-}
-
-resource "aws_kms_alias" "eks" {
-  name          = "alias/${var.eks_cluster_name}-eks"
-  target_key_id = aws_kms_key.eks.key_id
-}
-
 resource "aws_eks_cluster" "main" {
   name     = var.eks_cluster_name
   role_arn = aws_iam_role.cluster.arn
@@ -29,14 +11,6 @@ resource "aws_eks_cluster" "main" {
     subnet_ids              = var.eks_subnet_ids
     endpoint_public_access  = false
     endpoint_private_access = true
-  }
-
-  encryption_config {
-    resources = ["secrets"]
-
-    provider {
-      key_arn = aws_kms_key.eks.arn
-    }
   }
 
   depends_on = [

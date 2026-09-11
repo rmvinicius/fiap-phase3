@@ -43,6 +43,6 @@ variable "rds_subnet_ids" {
   type = list(string)
 }
 
-variable "rds_security_group_ids" {
+variable "rds_vpc_security_group_ids" {
   type = list(string)
 }
