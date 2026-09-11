@@ -46,3 +46,7 @@ variable "rds_subnet_ids" {
 variable "rds_vpc_security_group_ids" {
   type = list(string)
 }
+
+variable "rds_apply_immediately" {
+  type = bool
+}

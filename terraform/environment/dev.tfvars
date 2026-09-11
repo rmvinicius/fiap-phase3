@@ -30,49 +30,49 @@ route_table_private_name        = "rt-private-dev-01"
 
 sg_priv_ingress_rules = [
   {
-    description     = "Allow HTTPS from SG Public"
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    is_sg_public    = true
+    description  = "Allow HTTPS from SG Public"
+    from_port    = 443
+    to_port      = 443
+    protocol     = "tcp"
+    is_sg_public = true
   },
   {
-    description     = "Allow Postgres from SG Public"
-    from_port       = 5432
-    to_port         = 5432
-    protocol        = "tcp"
-    is_sg_public    = true
+    description  = "Allow Postgres from SG Public"
+    from_port    = 5432
+    to_port      = 5432
+    protocol     = "tcp"
+    is_sg_public = true
   },
   {
-    description     = "Allow ALL from VPC"
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    cidr_blocks     = ["10.0.0.0/16"]
+    description = "Allow ALL from VPC"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["10.0.0.0/16"]
   }
 ]
 
 sg_pub_ingress_rules = [
   {
-    description   = "Allow HTTP from internet"
-    from_port     = 80
-    to_port       = 80
-    protocol      = "tcp"
-    cidr_blocks   = ["104.30.169.100/32"]
+    description = "Allow HTTP from internet"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["104.30.169.100/32"]
   },
   {
-    description   = "Allow HTTPS from internet"
-    from_port     = 443
-    to_port       = 443
-    protocol      = "tcp"
-    cidr_blocks   = ["104.30.169.100/32"]
+    description = "Allow HTTPS from internet"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["104.30.169.100/32"]
   },
   {
-    description   = "Allow SSH from internet"
-    from_port     = 22
-    to_port       = 22
-    protocol      = "tcp"
-    cidr_blocks   = ["104.30.169.100/32"]
+    description = "Allow SSH from internet"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["104.30.169.100/32"]
   }
 ]
 
@@ -125,6 +125,7 @@ rds_engine_version       = "17"
 rds_parameter_group_name = "default.postgres17"
 rds_skip_final_snapshot  = true
 rds_subnet_name          = "rds-dev-subnet-group"
+rds_apply_immediately    = true
 
 ### EKS
 eks_cluster_name    = "eks-dev-01"

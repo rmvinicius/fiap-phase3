@@ -11,6 +11,7 @@ resource "aws_eks_cluster" "main" {
     subnet_ids              = var.eks_subnet_ids
     endpoint_public_access  = false
     endpoint_private_access = true
+    security_group_ids      = var.eks_security_group_ids
   }
 
   tags = {

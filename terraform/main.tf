@@ -80,17 +80,19 @@ module "rds" {
   rds_subnet_name            = var.rds_subnet_name
   rds_subnet_ids             = module.network.rds_subnet_ids
   rds_vpc_security_group_ids = [module.network.sg_private_id]
+  rds_apply_immediately      = var.rds_apply_immediately
 }
 
 ### MODULE EKS
 module "eks" {
-  source              = "./modules/eks"
-  environment         = var.environment
-  eks_cluster_name    = var.eks_cluster_name
-  eks_cluster_version = var.eks_cluster_version
-  eks_subnet_ids      = module.network.eks_subnet_ids
-  eks_node_groups     = var.eks_node_groups
-  eks_role_arn        = var.eks_role_arn
+  source                 = "./modules/eks"
+  environment            = var.environment
+  eks_cluster_name       = var.eks_cluster_name
+  eks_cluster_version    = var.eks_cluster_version
+  eks_subnet_ids         = module.network.eks_subnet_ids
+  eks_node_groups        = var.eks_node_groups
+  eks_role_arn           = var.eks_role_arn
+  eks_security_group_ids = [module.network.sg_private_id]
 }
 
 ### MODULE DYNAMODB

@@ -28,25 +28,25 @@ variable "ec2_security_group_ids" {
 }
 
 variable "ec2_key_name" {
-  type    = string
+  type = string
 }
 
 variable "ec2_monitoring" {
-  type    = bool
+  type = bool
 }
 
 variable "ec2_root_volume_size" {
-  type    = number
+  type = number
 }
 
 variable "ec2_root_volume_type" {
-  type    = string
+  type = string
 }
 
 variable "ec2_encrypted" {
-  type    = bool
+  type = bool
 }
 
 variable "ec2_delete_on_termination" {
-  type    = bool
+  type = bool
 }

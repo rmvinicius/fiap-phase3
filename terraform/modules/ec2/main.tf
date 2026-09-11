@@ -13,7 +13,7 @@ resource "aws_instance" "ec2" {
     encrypted             = var.ec2_encrypted
     delete_on_termination = var.ec2_delete_on_termination
   }
-  
+
   tags = {
     Name        = var.ec2_instance_name
     Environment = var.environment
