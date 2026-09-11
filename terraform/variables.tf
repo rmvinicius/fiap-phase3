@@ -113,20 +113,20 @@ variable "rds_database_instances" {
 }
 
 variable "rds_password_auth_db" {
-  type      = string
-  sensitive = true
+  type        = string
+  sensitive   = true
   description = "Master password for the auth_db RDS instance (set via TF_VAR_rds_password_auth_db)."
 }
 
 variable "rds_password_flags_db" {
-  type      = string
-  sensitive = true
+  type        = string
+  sensitive   = true
   description = "Master password for the flags_db RDS instance (set via TF_VAR_rds_password_flags_db)."
 }
 
 variable "rds_password_targeting_db" {
-  type      = string
-  sensitive = true
+  type        = string
+  sensitive   = true
   description = "Master password for the targeting_db RDS instance (set via TF_VAR_rds_password_targeting_db)."
 }
 

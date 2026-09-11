@@ -58,7 +58,7 @@ module "rds" {
   rds_parameter_group_name   = var.rds_parameter_group_name
   rds_skip_final_snapshot    = var.rds_skip_final_snapshot
   rds_subnet_name            = var.rds_subnet_name
-  rds_subnet_ids             = [module.network.rds_subnet_ids]
+  rds_subnet_ids             = module.network.rds_subnet_ids
   rds_vpc_security_group_ids = [module.network.sg_private_id]
 }
 
@@ -98,7 +98,7 @@ module "redis" {
   redis_port                 = var.redis_port
   redis_subnet_group_name    = var.redis_subnet_group_name
   redis_security_group_ids   = [module.network.sg_private_id]
-  redis_subnet_ids           = [module.network.redis_subnet_ids]
+  redis_subnet_ids           = module.network.redis_subnet_ids
 }
 
 ### MODULE ECR
