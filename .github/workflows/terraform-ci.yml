@@ -99,7 +99,7 @@ jobs:
 
       - name: 📋 Plan
         working-directory: terraform
-        run: terraform plan -var-file="environment/${{ steps.resolve.outputs.ENV_LOWER }}.tfvars" -out=tfplan
+        run: terraform plan -var-file="environment/${{ steps.resolve.outputs.ENV_LOWER }}.tfvars" -out=tfplan -lock=false
 
       - name: 📤 Upload tfplan artifact
         uses: actions/upload-artifact@v4
