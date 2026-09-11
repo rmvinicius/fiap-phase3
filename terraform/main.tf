@@ -16,6 +16,8 @@ module "network" {
   security_group_priv_description = var.security_group_priv_description
   security_group_pub_name         = var.security_group_pub_name
   security_group_pub_description  = var.security_group_pub_description
+  sg_priv_ingress_rules           = var.sg_priv_ingress_rules
+  sg_pub_ingress_rules            = var.sg_pub_ingress_rules
 }
 
 ### MODULE SQS

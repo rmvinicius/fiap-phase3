@@ -34,7 +34,6 @@ resource "aws_internet_gateway" "igw" {
 
 ### ELASTIC IP FOR NAT GATEWAY
 resource "aws_eip" "nat_eip" {
-  #checkov:skip=CKV2_AWS_19: "EIP is attached to NAT Gateway, not EC2 - Checkov does not recognize NAT Gateway as valid attachment"
   count  = var.eip_enable_nat_gateway ? 1 : 0
   domain = "vpc"
 
@@ -111,19 +110,20 @@ resource "aws_route_table_association" "private" {
 
 ### SECURITY GROUP
 resource "aws_security_group" "sg_private" {
-  #checkov:skip=CKV_AWS_382: "Unrestricted egress is required for private resources to reach the internet via NAT Gateway"
-  #checkov:skip=CKV2_AWS_5: "Security group is attached to RDS and Redis resources via module outputs"
   name        = var.security_group_priv_name
   description = var.security_group_priv_description
   vpc_id      = aws_vpc.vpc.id
 
-  # Initial inbound rule - SSH from VPC CIDR
-  ingress {
-    description = "Allow SSH from VPC"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.vpc_ipv4_block]
+  dynamic "ingress" {
+    for_each = var.sg_priv_ingress_rules
+    content {
+      description       = ingress.value.description
+      from_port         = ingress.value.from_port
+      to_port           = ingress.value.to_port
+      protocol          = ingress.value.protocol
+      cidr_blocks       = ingress.value.cidr_blocks
+      security_groups   = ingress.value.is_sg_public ? [aws_security_group.sg_public.id] : ingress.value.security_groups
+    }
   }
 
   egress {
@@ -141,19 +141,20 @@ resource "aws_security_group" "sg_private" {
 }
 
 resource "aws_security_group" "sg_public" {
-  #checkov:skip=CKV_AWS_382: "Unrestricted egress is required for public resources to reach the internet"
-  #checkov:skip=CKV2_AWS_5: "Security group is created for public-facing resources (e.g. Load Balancers) and is available for assignment"
   name        = var.security_group_pub_name
   description = var.security_group_pub_description
   vpc_id      = aws_vpc.vpc.id
 
-  # Initial inbound rule - HTTP from anywhere
-  ingress {
-    description = "Allow HTTP from internet"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["104.30.178.229/32"]
+  dynamic "ingress" {
+    for_each = var.sg_pub_ingress_rules
+    content {
+      description       = ingress.value.description
+      from_port         = ingress.value.from_port
+      to_port           = ingress.value.to_port
+      protocol          = ingress.value.protocol
+      cidr_blocks       = ingress.value.cidr_blocks
+      security_groups   = ingress.value.security_groups
+    }
   }
 
   egress {

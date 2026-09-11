@@ -72,6 +72,33 @@ variable "security_group_pub_description" {
   description = "Name of the public security group"
 }
 
+variable "sg_priv_ingress_rules" {
+  type = list(object({
+    description       = string
+    from_port         = number
+    to_port           = number
+    protocol          = string
+    cidr_blocks       = optional(list(string), [])
+    security_groups   = optional(list(string), [])
+    is_sg_public      = optional(bool, false)
+  }))
+  default     = []
+  description = "Ingress rules for the private security group"
+}
+
+variable "sg_pub_ingress_rules" {
+  type = list(object({
+    description       = string
+    from_port         = number
+    to_port           = number
+    protocol          = string
+    cidr_blocks       = optional(list(string), [])
+    security_groups   = optional(list(string), [])
+  }))
+  default     = []
+  description = "Ingress rules for the public security group"
+}
+
 ### SQS
 variable "sqs_name" {
   type = string

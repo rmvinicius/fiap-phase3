@@ -28,6 +28,54 @@ nat_gateway_name                = "nat-gw-dev-01"
 route_table_public_name         = "rt-public-dev-01"
 route_table_private_name        = "rt-private-dev-01"
 
+sg_priv_ingress_rules = [
+  {
+    description     = "Allow HTTPS from SG Public"
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    is_sg_public    = true
+  },
+  {
+    description     = "Allow Postgres from SG Public"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    is_sg_public    = true
+  },
+  {
+    description     = "Allow ALL from VPC"
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["10.0.0.0/16"]
+  }
+]
+
+sg_pub_ingress_rules = [
+  {
+    description   = "Allow HTTP from internet"
+    from_port     = 80
+    to_port       = 80
+    protocol      = "tcp"
+    cidr_blocks   = ["104.30.169.100/32"]
+  },
+  {
+    description   = "Allow HTTPS from internet"
+    from_port     = 443
+    to_port       = 443
+    protocol      = "tcp"
+    cidr_blocks   = ["104.30.169.100/32"]
+  },
+  {
+    description   = "Allow SSH from internet"
+    from_port     = 22
+    to_port       = 22
+    protocol      = "tcp"
+    cidr_blocks   = ["104.30.169.100/32"]
+  }
+]
+
 ### SQS
 sqs_name                       = "queue-toggle-master"
 sqs_delay_seconds              = 90
@@ -71,7 +119,7 @@ eks_cluster_name    = "eks-dev-01"
 eks_cluster_version = "1.36"
 eks_node_groups = [
   {
-    name          = "dev01"
+    name          = "eks-nodepool-dev-01"
     instance_type = "t3.medium"
     desired_size  = 2
     min_size      = 1
