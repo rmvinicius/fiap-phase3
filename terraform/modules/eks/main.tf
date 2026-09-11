@@ -63,3 +63,30 @@ resource "aws_eks_access_policy_association" "voclabs_admin" {
     type = "cluster"
   }
 }
+
+resource "aws_iam_policy" "cluster_autoscaler" {
+  name   = "${var.eks_cluster_name}-cluster-autoscaler"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DescribeAutoScalingInstances",
+        "autoscaling:DescribeLaunchConfigurations",
+        "autoscaling:DescribePolicies",
+        "autoscaling:DescribeScheduledActions",
+        "autoscaling:DescribeScalingActivities",
+        "autoscaling:DescribeScalingProcessTypes",
+        "autoscaling:UpdateAutoScalingGroup",
+        "autoscaling:SetDesiredCapacity"
+      ]
+      Resource = "*"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "cluster_autoscaler" {
+  role       = aws_iam_role.node_role.name
+  policy_arn = aws_iam_policy.cluster_autoscaler.arn
+}
