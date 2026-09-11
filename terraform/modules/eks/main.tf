@@ -87,6 +87,6 @@ resource "aws_iam_policy" "cluster_autoscaler" {
 }
 
 resource "aws_iam_role_policy_attachment" "cluster_autoscaler" {
-  role       = aws_iam_role.node_role.name
+  role       = split("/", var.eks_role_arn)[1]
   policy_arn = aws_iam_policy.cluster_autoscaler.arn
 }
