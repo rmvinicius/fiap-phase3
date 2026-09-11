@@ -33,18 +33,18 @@ module "sqs" {
 
 ### MODULE RDS
 module "rds" {
-  source                        = "./modules/rds"
-  environment                   = var.environment
-  rds_database_instances        = var.rds_database_instances
-  rds_allocated_storage         = var.rds_allocated_storage
-  rds_instance_class            = var.rds_instance_class
-  rds_engine                    = var.rds_engine
-  rds_engine_version            = var.rds_engine_version
-  rds_parameter_group_name      = var.rds_parameter_group_name
-  rds_skip_final_snapshot       = var.rds_skip_final_snapshot
-  rds_subnet_name               = var.rds_subnet_name
-  rds_subnet_ids                = module.network.rds_subnet_ids
-  rds_vpc_security_group_ids    = [module.network.sg_private_id]
+  source                     = "./modules/rds"
+  environment                = var.environment
+  rds_database_instances     = var.rds_database_instances
+  rds_allocated_storage      = var.rds_allocated_storage
+  rds_instance_class         = var.rds_instance_class
+  rds_engine                 = var.rds_engine
+  rds_engine_version         = var.rds_engine_version
+  rds_parameter_group_name   = var.rds_parameter_group_name
+  rds_skip_final_snapshot    = var.rds_skip_final_snapshot
+  rds_subnet_name            = var.rds_subnet_name
+  rds_subnet_ids             = module.network.rds_subnet_ids
+  rds_vpc_security_group_ids = [module.network.sg_private_id]
 }
 
 ### MODULE EKS

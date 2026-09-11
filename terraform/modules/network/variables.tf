@@ -1,31 +1,31 @@
 variable "environment" {
-    type = string
+  type = string
 }
 variable "vpc_name" {
-    type = string
+  type = string
 }
 variable "igw_name" {
-    type = string
+  type = string
 }
 variable "eip_name" {
-    type = string
+  type = string
 }
 variable "nat_gateway_name" {
-    type = string
+  type = string
 }
 variable "route_table_public_name" {
-    type = string
+  type = string
 }
 variable "route_table_private_name" {
-    type = string
+  type = string
 }
 
 variable "vpc_ipv4_block" {
-    type = string
+  type = string
 }
 
 variable "vpc_instance_tenancy" {
-    type = string
+  type = string
 }
 
 variable "subnets" {

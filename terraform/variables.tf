@@ -1,16 +1,16 @@
 ### TAGS
 variable "environment" {
-    type = string
+  type = string
 }
 
 ### REGION
 variable "aws_region" {
-    type = string
+  type = string
 }
 
 ### NETWORK
 variable "vpc_name" {
-    type = string
+  type = string
 }
 
 variable "vpc_ipv4_block" {
@@ -30,19 +30,19 @@ variable "subnets" {
 }
 
 variable "igw_name" {
-    type = string
+  type = string
 }
 variable "eip_name" {
-    type = string
+  type = string
 }
 variable "nat_gateway_name" {
-    type = string
+  type = string
 }
 variable "route_table_public_name" {
-    type = string
+  type = string
 }
 variable "route_table_private_name" {
-    type = string
+  type = string
 }
 
 variable "eip_enable_nat_gateway" {
@@ -78,27 +78,27 @@ variable "sqs_name" {
 }
 
 variable "sqs_delay_seconds" {
-  type    = number
+  type = number
 }
 
 variable "sqs_max_message_size" {
-  type    = number
+  type = number
 }
 
 variable "sqs_message_retention_seconds" {
-  type    = number
+  type = number
 }
 
 variable "sqs_receive_wait_time_seconds" {
-  type    = number
+  type = number
 }
 
 variable "sqs_visibility_timeout_seconds" {
-  type    = number
+  type = number
 }
 
 variable "sqs_max_receive_count" {
-  type    = number
+  type = number
 }
 
 ### RDS Postgres
@@ -112,45 +112,45 @@ variable "rds_database_instances" {
 }
 
 variable "rds_allocated_storage" {
-  type    = number
+  type = number
 }
 
 variable "rds_instance_class" {
-  type    = string
+  type = string
 }
 
 variable "rds_engine" {
-  type    = string
+  type = string
 }
 
 variable "rds_engine_version" {
-  type    = string
+  type = string
 }
 
 variable "rds_parameter_group_name" {
-  type    = string
+  type = string
 }
 
 variable "rds_skip_final_snapshot" {
-  type    = bool
+  type = bool
 }
 
 variable "rds_subnet_name" {
-  type    = string
+  type = string
 }
 
 ### EKS
 variable "eks_cluster_name" {
-  type    = string
+  type = string
 }
 
 variable "eks_cluster_version" {
-  type    = string 
+  type = string
 }
 
 variable "eks_node_groups" {
   type = list(object({
-    name         = string
+    name          = string
     instance_type = string
     desired_size  = number
     min_size      = number
@@ -160,28 +160,28 @@ variable "eks_node_groups" {
 
 ### DYNAMODB
 variable "dynamodb_table_name" {
-  type    = string
+  type = string
 }
 
 variable "dynamodb_billing_mode" {
-  type    = string
+  type = string
 }
 
 variable "dynamodb_read_capacity" {
-  type    = number
+  type = number
 }
 
 variable "dynamodb_write_capacity" {
-  type    = number
+  type = number
 }
 
 
 variable "dynamodb_hash_key" {
-  type    = string
+  type = string
 }
 
 variable "dynamodb_range_key" {
-  type    = string
+  type = string
 }
 
 variable "dynamodb_attributes" {
@@ -193,19 +193,19 @@ variable "dynamodb_attributes" {
 
 ### REDIS
 variable "redis_cache_name" {
-  type    = string
+  type = string
 }
 
 variable "redis_description" {
-  type    = string
+  type = string
 }
 
 variable "redis_engine" {
-  type    = string
+  type = string
 }
 
 variable "redis_version" {
-  type    = string
+  type = string
 }
 
 ### ECR

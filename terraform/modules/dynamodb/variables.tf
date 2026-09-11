@@ -3,28 +3,28 @@ variable "environment" {
 }
 
 variable "dynamodb_table_name" {
-  type    = string
+  type = string
 }
 
 variable "dynamodb_billing_mode" {
-  type    = string
+  type = string
 }
 
 variable "dynamodb_read_capacity" {
-  type    = number
+  type = number
 }
 
 variable "dynamodb_write_capacity" {
-  type    = number
+  type = number
 }
 
 
 variable "dynamodb_hash_key" {
-  type    = string
+  type = string
 }
 
 variable "dynamodb_range_key" {
-  type    = string
+  type = string
 }
 
 variable "dynamodb_attributes" {

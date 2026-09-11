@@ -3,11 +3,11 @@ variable "environment" {
 }
 
 variable "eks_cluster_name" {
-  type    = string
+  type = string
 }
 
 variable "eks_cluster_version" {
-  type    = string 
+  type = string
 }
 
 variable "eks_subnet_ids" {
@@ -16,7 +16,7 @@ variable "eks_subnet_ids" {
 
 variable "eks_node_groups" {
   type = list(object({
-    name         = string
+    name          = string
     instance_type = string
     desired_size  = number
     min_size      = number

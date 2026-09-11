@@ -3,11 +3,11 @@ variable "environment" {
 }
 
 variable "redis_cache_name" {
-  type    = string
+  type = string
 }
 
 variable "redis_description" {
-  type    = string
+  type = string
 }
 
 variable "redis_security_group_ids" {
@@ -19,9 +19,9 @@ variable "redis_subnet_ids" {
 }
 
 variable "redis_engine" {
-  type    = string
+  type = string
 }
 
 variable "redis_version" {
-  type    = string
+  type = string
 }
