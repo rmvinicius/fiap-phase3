@@ -69,11 +69,14 @@ jobs:
         with:
           version: v3.14.4
 
-      - name: 🔧 Configure kubectl
-        uses: aws-actions/configure-kubectl@v3
-        with:
-          version: latest
-          cluster-name: ${{ secrets[format('EKS_CLUSTER_NAME_{0}', needs.changes.outputs.environment)] }}
+      - name: 🔧 Configure kubectl for EKS
+        run: |
+          aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ secrets[format('EKS_CLUSTER_NAME_{0}', needs.changes.outputs.environment)] }}
+
+      # Step 3: Run your standard Kubernetes commands
+      - name: 🔍 Verify Connection & Deploy
+        run: |
+          kubectl get nodes
 
       - name: 📂 Create namespace
         run: |
@@ -89,11 +92,3 @@ jobs:
           helm install argocd argo/argo-cd \
             --namespace ${{ env.ARGOCD_NAMESPACE }} \
             --values eks/argo-cd/values.yaml
-
-      - name: 📤 Upload Argo CD admin password
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          kubectl get secret argocd-initial-admin-secret -n ${{ env.ARGOCD_NAMESPACE }} -o jsonpath='{.data.password}' | base64 -d
-          echo ""
-          echo "Argo CD installed successfully."
-          echo "Access via: kubectl port-forward -n ${{ env.ARGOCD_NAMESPACE }} svc/argocd-server 8080:80"
