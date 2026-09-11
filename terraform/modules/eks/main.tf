@@ -46,3 +46,19 @@ resource "aws_eks_node_group" "nodes" {
     Environment = var.environment
   }
 }
+
+resource "aws_eks_access_entry" "voclabs" {
+  cluster_name  = aws_eks_cluster.main.name
+  principal_arn = "arn:aws:iam::598450975126:role/voclabs"
+  type          = "STANDARD"
+}
+
+resource "aws_eks_access_policy_association" "voclabs_admin" {
+  cluster_name  = aws_eks_cluster.main.name
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+  principal_arn = aws_eks_access_entry.voclabs.principal_arn
+
+  access_scope {
+    type = "cluster"
+  }
+}
