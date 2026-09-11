@@ -48,7 +48,7 @@ jobs:
   install-argocd:
     name: "Install Argo CD"
     needs: [changes]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       AWS_REGION: "us-east-1"
       ARGONCD_NAMESPACE: "argocd"
@@ -78,17 +78,17 @@ jobs:
         run: |
           kubectl get nodes
 
-      - name: 📂 Create namespace
-        run: |
-          kubectl create namespace ${{ env.ARGOCD_NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
-
-      - name: 🔍 Add Argo CD Helm repo
-        run: |
-          helm repo add argo https://argoproj.github.io/argo-helm
-          helm repo update
-
-      - name: 📦 Install Argo CD
-        run: |
-          helm install argocd argo/argo-cd \
-            --namespace ${{ env.ARGOCD_NAMESPACE }} \
-            --values eks/argo-cd/values.yaml
+      #- name: 📂 Create namespace
+      #  run: |
+      #    kubectl create namespace ${{ env.ARGOCD_NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
+#
+      #- name: 🔍 Add Argo CD Helm repo
+      #  run: |
+      #    helm repo add argo https://argoproj.github.io/argo-helm
+      #    helm repo update
+#
+      #- name: 📦 Install Argo CD
+      #  run: |
+      #    helm install argocd argo/argo-cd \
+      #      --namespace ${{ env.ARGOCD_NAMESPACE }} \
+      #      --values eks/argo-cd/values.yaml
