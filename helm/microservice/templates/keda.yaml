@@ -6,9 +6,9 @@ metadata:
   namespace: {{ .Values.namespace }}
 type: Opaque
 data:
-  AWS_ACCESS_KEY_ID: {{ .Values.keda.awsAccessKeyId | b64enc }}
-  AWS_SECRET_ACCESS_KEY: {{ .Values.keda.awsSecretAccessKey | b64enc }}
-  AWS_SESSION_TOKEN: {{ .Values.keda.awsSessionToken | b64enc }}
+  AWS_ACCESS_KEY_ID: {{ .Values.keda.awsAccessKeyId }}
+  AWS_SECRET_ACCESS_KEY: {{ .Values.keda.awsSecretAccessKey }}
+  AWS_SESSION_TOKEN: {{ .Values.keda.awsSessionToken }}
 ---
 apiVersion: keda.sh/v1alpha1
 kind: TriggerAuthentication
