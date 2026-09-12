@@ -12,7 +12,7 @@ resources:
 image:
   repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com
   name: flag-service
-  tag: "v1.0.0-c6a802a50a5bc763cac9faa6b4cb8d9613494986-DEV"
+  tag: "v1.0.0-5a44f78570ca15669bafe1e46094bffa15fa5db0-DEV"
   pullPolicy: IfNotPresent
 configmap:
   AUTH_SERVICE_URL: "http://auth-service-svc.application.svc.cluster.local:8001"
