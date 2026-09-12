@@ -5,6 +5,10 @@
 server:
   enabled: true
   
+  insecure: true
+  extraArgs:
+    - --insecure
+  
   # Configure Ingress for external access
   ingress:
     enabled: false
