@@ -9,7 +9,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
+    build-essential perl-base \
     && rm -rf /var/lib/apt/lists/*
 RUN python -m venv /opt/venv
 
@@ -30,7 +30,7 @@ COPY --from=builder /opt/venv /opt/venv
 
 COPY app.py .
 
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y curl perl-base
 
 RUN useradd -u 8888 flag-service && chown -R flag-service:flag-service /app
 
