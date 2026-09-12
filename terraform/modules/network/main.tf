@@ -170,13 +170,3 @@ resource "aws_security_group" "sg_public" {
     Environment = var.environment
   }
 }
-
-### DEFAULT SECURITY GROUP - restrict all traffic
-resource "aws_default_security_group" "default" {
-  vpc_id = aws_vpc.vpc.id
-
-  tags = {
-    Name        = "default-sg-restricted"
-    Environment = var.environment
-  }
-}

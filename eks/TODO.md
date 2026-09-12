@@ -24,3 +24,6 @@ sudo ./svc.sh start
 jobs:
   deploy:
     runs-on: [self-hosted, eks, private]
+
+# Install psql
+https://dev.to/johndotowl/postgresql-17-installation-on-ubuntu-2404-5bfi

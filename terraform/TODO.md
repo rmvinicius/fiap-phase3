@@ -6,15 +6,7 @@ aws s3api put-bucket-versioning --bucket $BUCKET_NAME \
   --versioning-configuration Status=Enabled
 aws s3api put-bucket-encryption --bucket $BUCKET_NAME \
   --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
-
-# Tabela DynamoDB para lock
-aws dynamodb create-table \
-  --table-name terraform-dev-locks \
-  --attribute-definitions AttributeName=LockID,AttributeType=S \
-  --key-schema AttributeName=LockID,KeyType=HASH \
-  --billing-mode PAY_PER_REQUEST \
-  --region us-east-1
-
+  
 # Build local terraform image
 docker build -t terraform-local:1.0 .
 
