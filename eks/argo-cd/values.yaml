@@ -1,46 +1,32 @@
-#global:
-#  domain: ://example.com
-
-# Core API and Web UI configurations
 server:
   enabled: true
-  
+
   insecure: true
   extraArgs:
     - --insecure
   
-  # Configure Ingress for external access
   ingress:
     enabled: false
   service:
-    type: ClusterIP # Change to LoadBalancer if not using Ingress
+    type: ClusterIP
 
-# Argo CD ConfigMap settings (RBAC, Authentication, Policies)
 configs:
   cm:
     create: true
-    # Enable users to login using an external OIDC/OAuth provider
-    # url: https://://example.com
-    
-    # Disable admin user if you rely entirely on SSO
     admin.enabled: "true"
-
-  # RBAC settings for users and groups
   rbac:
     create: true
-    policy.default: role:readonly # Safe default for new users
+    policy.default: role:readonly
     policy.csv: |
       p, role:org-admin, applications, *, */*, allow
       g, your-github-team, role:org-admin
 
-# Manage application dependencies and controllers
 applicationSet:
   enabled: true
 
 notifications:
-  enabled: false # Enable and configure for Slack/Email alerts
+  enabled: false
 
-# Resource optimization for production environments
 controller:
   replicas: 1
   resources:
@@ -50,7 +36,6 @@ controller:
     requests:
       cpu: 500m
       memory: 512Mi
-
-# Built-in Redis server configurations
+      
 redis:
   enabled: true

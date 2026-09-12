@@ -83,9 +83,9 @@ jobs:
           helm repo update
 
       - name: 📦 Install Ingress Nginx
-        working-directory: eks/ingress
+        working-directory: eks/ingress-nginx
         run: |
           helm upgrade --install ingress-nginx --version 4.15.1 ingress-nginx/ingress-nginx --namespace ${{ env.NAMESPACE }} --create-namespace -f values.yaml
-          kubectl apply -f ingress-ms.yaml
+          kubectl apply -f microservice-ingress.yaml
           kubectl apply -f argocd-ingress.yaml
-          kubectl apply -f route.yaml
+          kubectl apply -f route-service.yaml
