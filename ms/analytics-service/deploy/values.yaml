@@ -12,7 +12,7 @@ resources:
 image:
   repository: 598450975126.dkr.ecr.us-east-1.amazonaws.com
   name: analytics-service
-  tag: "v1.0.0-fccf5a531e4519c77d4060dee4af73d54eadd859-DEV"
+  tag: "v1.0.0-551caac5d6a7598fb43b495f24e529845ff700d8-DEV"
   pullPolicy: IfNotPresent
 configmap:
   PORT: "8005"
