@@ -79,4 +79,4 @@ jobs:
       - name: 📦 Install Gitops
         working-directory: gitops/argocd/applications
         run: |
-          kubectl apply -f *.yaml
+          kubectl apply -f ./*
