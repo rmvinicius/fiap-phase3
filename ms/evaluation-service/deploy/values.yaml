@@ -12,7 +12,7 @@ resources:
 image:
   repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com
   name: evaluation-service
-  tag: "v1.0.0-1e33200777b29cf944354923439e429872deb798-DEV"
+  tag: "v1.0.0-5a44f78570ca15669bafe1e46094bffa15fa5db0-DEV"
   pullPolicy: IfNotPresent
 configmap:
   PORT: "8004"
