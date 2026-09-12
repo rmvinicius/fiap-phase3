@@ -21,9 +21,7 @@ image:
 configmap:
   PORT: "8001"
 
-secrets:
-  DATABASE_URL: "postgres://auth_service:auth_service%40126@..."
-  MASTER_KEY: "admin-key-2026"
+secrets: {}
 
 probes:
   startup:
