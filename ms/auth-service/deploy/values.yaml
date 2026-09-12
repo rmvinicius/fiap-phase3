@@ -12,7 +12,7 @@ resources:
 image:
   repository: 598450975126.dkr.ecr.us-east-1.amazonaws.com
   name: auth-service
-  tag: "v1.0.0-5a44f78570ca15669bafe1e46094bffa15fa5db0-DEV"
+  tag: "v1.0.0-582c2e95cb19cccefabb067a95347d41eab6a6ce-DEV"
   pullPolicy: IfNotPresent
 configmap:
   PORT: "8001"
