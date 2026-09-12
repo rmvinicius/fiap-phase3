@@ -10,7 +10,7 @@ resources:
     cpu: "100m"
     memory: "256Mi"
 image:
-  repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com/toggle-master
+  repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com
   name: auth-service
   tag: "v1.0.0-1e33200777b29cf944354923439e429872deb798-DEV"
   pullPolicy: IfNotPresent

@@ -27,3 +27,20 @@ jobs:
 
 # Install psql
 https://dev.to/johndotowl/postgresql-17-installation-on-ubuntu-2404-5bfi
+
+# Configure argocd repository to connect
+
+Method 1: ArgoCD CLI (Recommended)
+# Add repo with token (GitHub Personal Access Token with 'repo' scope)
+argocd repo add https://github.com/rmvinicius/fiap-phase3.git \
+  --username <your-github-username> \
+  --password <your-github-token> \
+  --upsert
+
+Method 2: Via ArgoCD UI
+Settings → Repositories → Connect Repo
+Type: Git
+Repository URL: https://github.com/rmvinicius/fiap-phase3.git
+Username: Your GitHub username
+Password: Personal Access Token (PAT) with repo scope
+Click Connect

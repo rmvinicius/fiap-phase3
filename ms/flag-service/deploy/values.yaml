@@ -10,7 +10,7 @@ resources:
     cpu: "100m"
     memory: "256Mi"
 image:
-  repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com/toggle-master
+  repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com
   name: flag-service
   tag: "v1.0.0-c6a802a50a5bc763cac9faa6b4cb8d9613494986-DEV"
   pullPolicy: IfNotPresent
