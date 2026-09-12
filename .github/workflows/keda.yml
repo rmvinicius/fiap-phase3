@@ -81,6 +81,5 @@ jobs:
           helm repo update
 
       - name: 📦 Install Keda
-        working-directory: eks/keda
         run: |
           helm upgrade --install keda --version 2.20.1 kedacore/keda --namespace ${{ env.NAMESPACE }} --create-namespace
