@@ -10,7 +10,7 @@ resources:
     cpu: "100m"
     memory: "256Mi"
 image:
-  repository: 076892642827.dkr.ecr.us-east-1.amazonaws.com
+  repository: 598450975126.dkr.ecr.us-east-1.amazonaws.com
   name: targeting-service
   tag: "v1.0.0-5a44f78570ca15669bafe1e46094bffa15fa5db0-DEV"
   pullPolicy: IfNotPresent

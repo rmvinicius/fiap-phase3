@@ -77,6 +77,5 @@ jobs:
           kubectl get nodes
 
       - name: 📦 Install Gitops
-        working-directory: gitops/argocd/applications
         run: |
-          kubectl apply -f ./*
+          kubectl apply -f gitops/argocd/applications/
